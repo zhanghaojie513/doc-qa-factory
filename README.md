@@ -13,6 +13,8 @@
 
 [English](README.md) | [简体中文](README.zh-CN.md)
 
+<img src="docs/social-card.png" alt="doc-qa-factory — Turn any manual into a verifiable Q&A assistant" width="880">
+
 </div>
 
 ---

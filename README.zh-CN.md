@@ -9,6 +9,8 @@
 
 [English](README.md) | 简体中文
 
+<img src="docs/social-card.png" alt="doc-qa-factory · 文档问答助手工厂" width="880">
+
 </div>
 
 ---
