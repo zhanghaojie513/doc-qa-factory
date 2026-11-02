@@ -52,7 +52,6 @@ console.log('');
 const manPath = path.join(REFS, 'manual-source.md');
 if (!fs.existsSync(manPath)) {
   // 全新克隆/尚未装载：给引导而不是报错
-  console.log('技能目录: ' + SKILL_DIR);
   console.log('');
   warn('尚未装载任何手册（找不到 references/manual-source.md）');
   console.log('  首次装载：node scripts/calibrate.js "<手册.docx>" --update');
