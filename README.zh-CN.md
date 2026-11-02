@@ -4,27 +4,46 @@
 
 [English](README.md) | 简体中文
 
-<img src="docs/demo.gif" alt="doc-qa-factory 快速上手演示" width="720">
-
 </div>
 
 ---
 
-**Turn any manual into a verifiable Q&A assistant.** 把任何产品手册 / 操作规程 / 制度文档，装载成一个**可追溯**的问答助手：回答带逐字原文编号出处、插图按章节归位可直发、具体值绝不编造、手册改版一条命令自动重标定。
+**Turn any manual into a verifiable Q&A assistant.** 把任何产品手册 / 操作规程 / 制度文档，装载成一个**可追溯**的问答助手：回答带逐字原文编号出处、插图按章节归位可直发、具体值绝不编造、手册改版自动重标定。
 
-仓库出厂自带一份**全虚构**的演示知识库（《桌面气泡水机使用手册》），clone 下来三条命令即可体验完整流水线。
+仓库出厂自带一份**全虚构**的演示知识库（《桌面气泡水机使用手册》）——把它当 skill 装好，然后**对 agent 说人话就行**，整条流水线由它来跑。
+
+## 作为 Skill 使用（推荐）
+
+装进任何支持 Agent Skills 的 runtime：
+
+| Runtime | 安装 |
+|---|---|
+| Claude Code | `git clone https://github.com/zhanghaojie513/doc-qa-factory ~/.claude/skills/doc-qa-factory` |
+| 通用 skills 目录约定 | `git clone https://github.com/zhanghaojie513/doc-qa-factory ~/.agents/skills/doc-qa-factory` |
+| 其他 Agent-Skills runtime | clone 到任意位置，再按 runtime 文档注册含 `SKILL.md` 的目录 |
+
+然后直接说话就行——没有需要背的命令：
+
+| 你说 | 助手做 |
+|---|---|
+| 「装载演示手册」 | 标定这份虚构手册：建逐字原文编号基准、提取插图按章节归位、跑六项一致性校验——你只看到**全绿** |
+| 「机器显示 E1 怎么办？」 | 给出可照做的排查步骤、带原文出处（M015），并**把相关插图作为文件发给你** |
+| 「换装我公司的手册：`D:\docs\打印机维修手册.docx`」 | 🔴 先与你确认方案，归档演示知识库、重写逐手册配置、重新标定、重建 Q&A 预案——**verify 全绿才算装完** |
+| 「现在装载的是哪份手册？」 | 读取标定记录，报出文档名 / 版本 / 校验和 |
+| 「把演示手册找回来」 | 🔴 确认后从归档恢复 |
+
+<details>
+<summary>助手背后自动执行的命令（你不需要自己敲）</summary>
+
+<img src="docs/demo.gif" alt="助手背后自动执行的命令" width="720">
 
 ```bash
-node scripts/calibrate.js demo-manual.docx --update   # 装载演示手册（建编号基准、提取插图、建媒体索引）
+node scripts/calibrate.js demo-manual.docx --update   # 装载：编号基准 + 插图提取 + 媒体索引
 node scripts/verify.js                                # 六项一致性校验 → 全绿
-node scripts/calibrate.js demo-manual.docx            # 漂移检测（手册改版后先跑这个）
+node scripts/calibrate.js demo-manual.docx            # 手册改版后的漂移检测
 ```
 
-<img src="docs/verify-green.png" alt="verify.js 全绿输出" width="720">
-
-> Agent Skill 格式（`SKILL.md` frontmatter：`name` + `description`），可在任何支持 Agent Skills 的 runtime 中使用；作为普通仓库阅读也完全自洽。
-
----
+</details>
 
 ## 为什么是这套设计
 
@@ -39,31 +58,27 @@ LLM 答手册类问题的最大风险不是"答不出"，而是**自信地编造
 
 ## 换装你自己的手册
 
-1. 复制仓库为你的技能目录，改 `SKILL.md` frontmatter 的 `name`
-2. 🔴 归档演示知识库（`references/` + `assets/` → `archive/demo-日期/`）
-3. 重写 `references/manual-config.json`（引擎的逐手册配置，**脚本本体零手册内容**）：
-   - `docTitle` / `docVersion` — 手册名与版本
-   - `expectedTitlePattern` — 文档主题守卫（防止误标定到无关文档的安全锁，跨文档换装时配合 `--force-replace`）
-   - `headingStyles` — docx 标题样式 ID（缺省 `Heading1`/`Heading2`；中文 Word 导出的内部样式 ID 也可配置）
-   - `imageSlugs` — 章节标题 → 图片文件名前缀（未登记的小节自动 `sec-NN`）
-   - `watchedValues` / `knownValues` — 要盯的具体值清单（如"有效期 X 小时"），改版时逐项报警
-4. `node scripts/calibrate.js "<你的手册.docx>" --update --force-replace`
-5. 重写 `references/qa-playbook.md`（术语对齐表 / 分因预案 / 对接人 / "文档里没有的内容"）
-6. `node scripts/verify.js` **全绿才算装完**（红灯门禁）
+你只提供三样东西，其余全是助手的活（见 `SKILL.md` 模式 A）：
 
-**无 ffmpeg？** calibrate 会自动降级为原图直拷（跳过重编码），不阻断流程。
+1. **DOCX 文件**——告诉 agent 路径即可；🔴 它会先和你确认换装方案再动手
+2. **确认时的点头**——归档 → 重写配置 → 重新标定 → 重建预案 → verify 门禁，一条链它自己走完
+3. **内幕知识**（有则给）——术语叫法、对接人、"文档里没有的内容"；助手起草，你来纠偏
 
-**非 DOCX**（PDF/TXT/MD）：按现有文件格式人工构建后跑 `verify.js`（见 `SKILL.md` 模式 A）。
+它重写的逐手册配置是 `references/manual-config.json`（**脚本本体零手册内容**）：
 
-## 作为 Agent Skill 使用
+- `docTitle` / `docVersion` — 手册名与版本
+- `expectedTitlePattern` — 文档主题守卫（防止误标定到无关文档的安全锁，跨文档换装配合 `--force-replace`）
+- `headingStyles` — docx 标题样式 ID（缺省 `Heading1`/`Heading2`；中文 Word 导出的内部样式 ID 也可配置）
+- `imageSlugs` — 章节标题 → 图片文件名前缀（未登记的小节自动 `sec-NN`）
+- `watchedValues` / `knownValues` — 要盯的具体值清单（如"有效期 X 小时"），改版时逐项报警
 
-| Runtime | 安装方式 |
-|---|---|
-| Claude Code | 放入 `~/.claude/skills/doc-qa-factory/`（或项目 `.claude/skills/`） |
-| 通用 skills 目录约定 | 放入 `~/.agents/skills/doc-qa-factory/` |
-| 其他支持 Agent Skills 的 runtime | 按 runtime 文档注册含 `SKILL.md` 的目录 |
+备注：**没装 ffmpeg？** 照样能用——插图自动降级为原图直拷，不阻断流程。**非 DOCX**（PDF/TXT/MD）：助手按现有文件格式人工构建，然后走同一个 verify 门禁。
 
-触发示例：「气泡水机显示 E1 怎么办？」「把相关的图发我」「我想换装自己公司的手册」——即使不提"手册"二字，frontmatter 的 description 也会让 runtime 在相关话题命中。
+## 全绿为什么重要（三条硬规则）
+
+1. **不编造具体值** — 原文里没有就明说"文档没写"，转对接人；靠 `knownValues` + 措辞比对逐项拦截"凭感觉猜网址"这类事故
+2. **不描述图片** — 图片含义以该节正文文字为准；发图（首选）或报位置，不 OCR
+3. **红灯门禁** — `verify.js` 有 `[FAIL]` 就不得宣布完成；高危动作（换装 / `--update` / 恢复归档）前有显式 🔴 CHECKPOINT 强制用户确认
 
 ## 仓库结构
 
@@ -72,7 +87,7 @@ doc-qa-factory/
 ├── SKILL.md                     助手行为规则（三模式：构建换装 / 问答 / 管理）
 ├── demo-manual.docx             演示手册（全虚构，可重复标定）
 ├── references/
-│   ├── manual-config.json       逐手册配置（守卫/样式/图片命名/受监视值）← 换装时你重写的文件
+│   ├── manual-config.json       逐手册配置（守卫/样式/图片命名/受监视值）← 换装时重写
 │   ├── operations.md            标准流程整理（演示示例）
 │   ├── troubleshooting.md       故障排查整理（演示示例）
 │   ├── qa-playbook.md           专属 Q&A 预案（演示示例）
@@ -88,12 +103,6 @@ doc-qa-factory/
 │   └── package.js               分发打包（先跑 verify，红灯拒绝打包）
 └── build/                       演示素材与生成脚本（docs 的 GIF、demo docx）
 ```
-
-## 设计原则（防"自信编造"的三条硬规则）
-
-1. **不编造具体值** — 原文里没有就明说"文档没写"，转对接人；曾实测"凭域名猜测编造登录网址"这类事故，现在靠 `knownValues` + 措辞比对逐项拦截
-2. **不描述图片** — 图片含义以该节正文文字为准；发图（首选）或报位置，不 OCR
-3. **红灯门禁** — `verify.js` 有 `[FAIL]` 就不得宣布完成；高危动作（换装 / `--update` / 恢复归档）前有显式 🔴 CHECKPOINT 强制用户确认
 
 ## License
 
