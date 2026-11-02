@@ -1,0 +1,12 @@
+# calibrate 生成的知识库产物（每人装载自己的手册后各自生成）
+references/manual-source.md
+references/manual-source.lock.json
+references/media-index.md
+assets/
+
+# demo docx 的构建中间产物（demo-manual.docx 与 make-demo-docx.mjs + img*.png 已入库，可完全复现）
+build/unpacked/
+build/*.html
+
+# 换装归档
+archive/

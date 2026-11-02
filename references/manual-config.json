@@ -1,0 +1,25 @@
+{
+  "docTitle": "《桌面气泡水机使用手册（演示文档）》",
+  "docVersion": "2026年11月演示版",
+  "expectedTitlePattern": "气泡水机",
+  "headingStyles": { "h1": "Heading1", "h2": "Heading2" },
+  "imageSlugs": {
+    "部件与安装": "install",
+    "制作气泡水": "make",
+    "滤芯更换": "filter"
+  },
+  "watchedValues": [
+    { "label": "滤芯寿命", "line": "滤芯|寿命", "re": "(\\d+)天" },
+    { "label": "注气等待", "line": "等待", "re": "等待约(\\d+)秒" },
+    { "label": "摇瓶次数", "line": "轻摇", "re": "轻摇气泡瓶(\\d+)次" },
+    { "label": "水温上限", "line": "降至", "re": "降至(\\d+)℃" },
+    { "label": "童锁时长", "line": "锁定", "re": "锁定(\\d+)分钟" }
+  ],
+  "knownValues": [
+    ["滤芯寿命", "60天"],
+    ["注气等待", "8秒"],
+    ["摇瓶次数", "2次"],
+    ["水温上限", "40℃"],
+    ["童锁时长", "30分钟"]
+  ]
+}

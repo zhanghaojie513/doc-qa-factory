@@ -1,0 +1,88 @@
+# doc-qa-factory · 文档问答助手工厂
+
+**Turn any manual into a verifiable Q&A assistant.** 把任何产品手册 / 操作规程 / 制度文档，装载成一个**可追溯**的问答助手：回答带逐字原文编号出处、插图按章节归位可直发、具体值绝不编造、手册改版一条命令自动重标定。
+
+仓库出厂自带一份**全虚构**的演示知识库（《桌面气泡水机使用手册》），clone 下来三条命令即可体验完整流水线。
+
+```bash
+node scripts/calibrate.js demo-manual.docx --update   # 装载演示手册（建编号基准、提取插图、建媒体索引）
+node scripts/verify.js                                # 六项一致性校验 → 全绿
+node scripts/calibrate.js demo-manual.docx            # 漂移检测（手册改版后先跑这个）
+```
+
+> Agent Skill 格式（`SKILL.md` frontmatter：`name` + `description`），可在任何支持 Agent Skills 的 runtime 中使用；作为普通仓库阅读也完全自洽。
+
+---
+
+## 为什么是这套设计
+
+LLM 答手册类问题的最大风险不是"答不出"，而是**自信地编造**：编一个菜单路径、猜一个参数值、把插图内容看错再讲错。本工厂用四个机制堵死：
+
+| 机制 | 做法 |
+|---|---|
+| **逐字原文锚定** | 手册全文逐字编号（`M001`–`MNNN`，连错别字都保留）为唯一事实基准；答复里每个事实都要能落到编号上，如"滤芯寿命为60天（M010）" |
+| **图片按章节归属** | 插图文件按"出现在手册哪一节、第几张"命名（`filter-01.jpg`），**永不按"我以为图里是什么"命名**；助手只发图或报位置，不描述、不 OCR 图片内容 |
+| **六项一致性校验** | `verify.js`：引用越界 / 截图死链 / 冗余图 / 具体值出处 / 基准篡改 / 正文措辞 vs 原文——红灯就不得上线 |
+| **改版自动重标定** | 手册改版后 `calibrate` 按逐行内容指纹找出每行搬到哪了，自动改写全部 `M###` 引用、重新归属图片，并报告必须人工处理的部分（值变了 / 行被删 / 新增内容） |
+
+## 换装你自己的手册
+
+1. 复制仓库为你的技能目录，改 `SKILL.md` frontmatter 的 `name`
+2. 🔴 归档演示知识库（`references/` + `assets/` → `archive/demo-日期/`）
+3. 重写 `references/manual-config.json`（引擎的逐手册配置，**脚本本体零手册内容**）：
+   - `docTitle` / `docVersion` — 手册名与版本
+   - `expectedTitlePattern` — 文档主题守卫（防止误标定到无关文档的安全锁，跨文档换装时配合 `--force-replace`）
+   - `headingStyles` — docx 标题样式 ID（缺省 `Heading1`/`Heading2`；中文 Word 导出的内部样式 ID 也可配置）
+   - `imageSlugs` — 章节标题 → 图片文件名前缀（未登记的小节自动 `sec-NN`）
+   - `watchedValues` / `knownValues` — 要盯的具体值清单（如"有效期 X 小时"），改版时逐项报警
+4. `node scripts/calibrate.js "<你的手册.docx>" --update --force-replace`
+5. 重写 `references/qa-playbook.md`（术语对齐表 / 分因预案 / 对接人 / "文档里没有的内容"）
+6. `node scripts/verify.js` **全绿才算装完**（红灯门禁）
+
+**无 ffmpeg？** calibrate 会自动降级为原图直拷（跳过重编码），不阻断流程。
+
+**非 DOCX**（PDF/TXT/MD）：按现有文件格式人工构建后跑 `verify.js`（见 `SKILL.md` 模式 A）。
+
+## 作为 Agent Skill 使用
+
+| Runtime | 安装方式 |
+|---|---|
+| Claude Code | 放入 `~/.claude/skills/doc-qa-factory/`（或项目 `.claude/skills/`） |
+| 通用 skills 目录约定 | 放入 `~/.agents/skills/doc-qa-factory/` |
+| 其他支持 Agent Skills 的 runtime | 按 runtime 文档注册含 `SKILL.md` 的目录 |
+
+触发示例：「气泡水机显示 E1 怎么办？」「把相关的图发我」「我想换装自己公司的手册」——即使不提"手册"二字，frontmatter 的 description 也会让 runtime 在相关话题命中。
+
+## 仓库结构
+
+```
+doc-qa-factory/
+├── SKILL.md                     助手行为规则（三模式：构建换装 / 问答 / 管理）
+├── demo-manual.docx             演示手册（全虚构，可重复标定）
+├── references/
+│   ├── manual-config.json       逐手册配置（守卫/样式/图片命名/受监视值）← 换装时你重写的文件
+│   ├── operations.md            标准流程整理（演示示例）
+│   ├── troubleshooting.md       故障排查整理（演示示例）
+│   ├── qa-playbook.md           专属 Q&A 预案（演示示例）
+│   ├── manual-source.md         逐字原文（由 calibrate 生成，gitignore）
+│   ├── manual-source.lock.json  标定记录（生成）
+│   └── media-index.md           图/视频 → 章节索引（生成）
+├── assets/screenshots/          按章节命名的插图（由 calibrate 从 docx 提取）
+├── scripts/
+│   ├── docx.js                  无依赖 .docx 读取（手写 ZIP 解析 + WordprocessingML）
+│   ├── zip.js                   无依赖 zip 写入（deflate、固定时间戳 → 可字节复现）
+│   ├── calibrate.js             漂移检测 + 重新标定（编号/图片/索引/引用全自动）
+│   ├── verify.js                六项一致性校验
+│   └── package.js               分发打包（先跑 verify，红灯拒绝打包）
+└── build/make-demo-docx.mjs     演示手册的生成脚本（想改演示内容从这里入手）
+```
+
+## 设计原则（防"自信编造"的三条硬规则）
+
+1. **不编造具体值** — 原文里没有就明说"文档没写"，转对接人；曾实测"凭域名猜测编造登录网址"这类事故，现在靠 `knownValues` + 措辞比对逐项拦截
+2. **不描述图片** — 图片含义以该节正文文字为准；发图（首选）或报位置，不 OCR
+3. **红灯门禁** — `verify.js` 有 `[FAIL]` 就不得宣布完成；高危动作（换装 / `--update` / 恢复归档）前有显式 🔴 CHECKPOINT 强制用户确认
+
+## License
+
+MIT
