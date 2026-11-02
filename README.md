@@ -42,6 +42,8 @@ npx skills add zhanghaojie513/doc-qa-factory
 
 </details>
 
+Runs on Node 18+ with **zero npm dependencies** — every script uses Node built-ins only. `ffmpeg` is optional (it auto-degrades to raw copies when missing).
+
 Then just say it — no commands to memorize:
 
 | You say | The assistant does |
@@ -64,6 +66,47 @@ node scripts/calibrate.js demo-manual.docx            # drift check after any ma
 ```
 
 </details>
+
+## How it works
+
+One command turns a DOCX into a verified knowledge base; a second command proves it:
+
+```mermaid
+flowchart LR
+    A["your manual (.docx)"] --> B["calibrate.js --update<br/>verbatim numbering · image extraction<br/>media index · citation rewrite"]
+    B --> C["references/ + assets/"]
+    C --> D["verify.js — 6 checks"]
+    D -- all green --> E["loaded · ready for Q&A"]
+    D -- any FAIL --> F["red-light gate: not loaded"]
+    G["manual revision"] --> H["drift check"] --> B
+```
+
+Everything the assistant later says must land on a line of `references/manual-source.md` — that single constraint is what makes citations, value checks, and drift detection all possible.
+
+## What an answer looks like
+
+> **Q: How do I replace the filter?**
+>
+> The filter lasts 60 days — when the panel shows `F0`, it's due (M010).
+>
+> 1. Unscrew the old filter (counter-clockwise)
+> 2. Peel the sealing film off the new one
+> 3. Screw the new one in (clockwise)
+> 4. Hold 「Reset」 for 3 seconds to clear the notice
+>
+> 📎 The illustration `assets/screenshots/filter-01.jpg` (section 「Filter replacement」, image 1) is sent as a **file** whenever the runtime supports attachments. The assistant never describes what a picture shows — the section's text above is the source of truth.
+
+> **Q: The machine shows `E1`.**
+>
+> `E1` = abnormal air pressure: check that the CO₂ canister is screwed in tight and still has gas, then press 「Gas」 to retry (M015). Still stuck → after-sales support, never disassemble the unit (M017). This section has **no illustration** — and the assistant says so honestly instead of inventing one.
+
+## Three modes
+
+| Mode | You say | The assistant does |
+|---|---|---|
+| **A · Build / swap** | "Load this manual" / "swap in our SOP" | 🔴 confirms plan → archives current KB → rewrites config → re-calibrates → rebuilds playbook → ships only when verify is all green |
+| **B · Q&A** | anything about the loaded manual | actionable steps + numbered citations + illustration files first |
+| **C · Manage** | "which manual is loaded?" / "bring back the demo" | reads the calibration lock / restores an archive after a 🔴 confirmation |
 
 ## Why this design
 
@@ -99,6 +142,29 @@ Notes: **no ffmpeg?** the assistant still works — images are copied as-is inst
 1. **Never invent specific values** — if the source doesn't have it, say so and route to the contact person; caught per-item by `knownValues` + prose comparison
 2. **Never describe images** — image meaning comes from that section's text; send the file (preferred) or report its position, no OCR
 3. **Red-light gate** — any `[FAIL]` in `verify.js` blocks "done" declarations; high-risk actions (swap / `--update` / archive restore) sit behind explicit 🔴 CHECKPOINTs requiring user confirmation
+
+## FAQ
+
+**Does it only support DOCX?**
+DOCX is the fully automatic path (numbering, image extraction, media index). PDF/TXT/MD can be loaded by building the reference files manually — the same six-check verify gate applies.
+
+**Can I keep several manuals at once?**
+One is loaded at a time. Every swap archives the previous knowledge base to `archive/`, and any archive can be restored later (after a 🔴 confirmation).
+
+**What if verify.js reports a failure?**
+Nothing ships. `SKILL.md` carries a fix table for every `[FAIL]` — citation out of range, dead links, orphan files, value provenance, baseline tampering, prose-vs-source — each with a first-line fix and a last-resort fallback.
+
+**Where do my documents go?**
+Nowhere. Everything runs locally: the docx is read in place, extracted images land in `assets/`, and nothing is uploaded to any service.
+
+**Which runtimes are supported?**
+Anything that reads Agent Skills (`SKILL.md`): Claude Code, Codex, Cursor, and 70+ more through `npx skills add`.
+
+## Contributing
+
+Issues and PRs welcome. When changing behavior, keep the three hard rules intact — they are the product, not decoration. Demo assets (docx, GIF, screenshots) regenerate from `build/`.
+
+Mascot and social card were generated with `gemini-3-pro-image-preview`; the full candidate history with per-image prompts lives in `docs/logo-candidates/`.
 
 ## Repository layout
 
