@@ -1,87 +1,101 @@
-# doc-qa-factory · 文档问答助手工厂
+<div align="center">
 
-**Turn any manual into a verifiable Q&A assistant.** 把任何产品手册 / 操作规程 / 制度文档，装载成一个**可追溯**的问答助手：回答带逐字原文编号出处、插图按章节归位可直发、具体值绝不编造、手册改版一条命令自动重标定。
+# doc-qa-factory
 
-仓库出厂自带一份**全虚构**的演示知识库（《桌面气泡水机使用手册》），clone 下来三条命令即可体验完整流水线。
+**Turn any manual into a verifiable Q&A assistant.**
 
-```bash
-node scripts/calibrate.js demo-manual.docx --update   # 装载演示手册（建编号基准、提取插图、建媒体索引）
-node scripts/verify.js                                # 六项一致性校验 → 全绿
-node scripts/calibrate.js demo-manual.docx            # 漂移检测（手册改版后先跑这个）
-```
+逐字原文编号锚定 · 图片按章节归属 · 六项一致性校验 · 改版自动重标定
 
-> Agent Skill 格式（`SKILL.md` frontmatter：`name` + `description`），可在任何支持 Agent Skills 的 runtime 中使用；作为普通仓库阅读也完全自洽。
+[English](README.md) | [简体中文](README.zh-CN.md)
+
+<img src="docs/demo.gif" alt="doc-qa-factory quickstart demo" width="720">
+
+</div>
 
 ---
 
-## 为什么是这套设计
+An Agent-Skill-format toolkit that loads any product manual / SOP / policy document into a **traceable** Q&A assistant: every answer carries a numbered citation back to the verbatim source text, illustrations are filed by the section they appear in, specific values are never invented, and a manual revision is re-calibrated with a single command.
 
-LLM 答手册类问题的最大风险不是"答不出"，而是**自信地编造**：编一个菜单路径、猜一个参数值、把插图内容看错再讲错。本工厂用四个机制堵死：
+The repo ships with a **fully fictional** demo knowledge base (a desktop sparkling-water maker manual) — clone it and run three commands to experience the whole pipeline.
 
-| 机制 | 做法 |
+```bash
+node scripts/calibrate.js demo-manual.docx --update   # load the demo manual (numbering baseline, extract illustrations, build media index)
+node scripts/verify.js                                # six consistency checks → all green
+node scripts/calibrate.js demo-manual.docx            # drift check (run this first after a manual revision)
+```
+
+<img src="docs/verify-green.png" alt="verify.js all-green output" width="720">
+
+> Works as an Agent Skill (`SKILL.md` frontmatter: `name` + `description`) in any skills-compatible runtime, and reads perfectly well as a plain repository.
+
+## Why this design
+
+The biggest risk of LLMs answering manual questions is not "can't answer" — it's **confidently inventing**: a menu path that doesn't exist, a plausible-but-wrong parameter, an image described wrongly. Four mechanisms close those holes:
+
+| Mechanism | How |
 |---|---|
-| **逐字原文锚定** | 手册全文逐字编号（`M001`–`MNNN`，连错别字都保留）为唯一事实基准；答复里每个事实都要能落到编号上，如"滤芯寿命为60天（M010）" |
-| **图片按章节归属** | 插图文件按"出现在手册哪一节、第几张"命名（`filter-01.jpg`），**永不按"我以为图里是什么"命名**；助手只发图或报位置，不描述、不 OCR 图片内容 |
-| **六项一致性校验** | `verify.js`：引用越界 / 截图死链 / 冗余图 / 具体值出处 / 基准篡改 / 正文措辞 vs 原文——红灯就不得上线 |
-| **改版自动重标定** | 手册改版后 `calibrate` 按逐行内容指纹找出每行搬到哪了，自动改写全部 `M###` 引用、重新归属图片，并报告必须人工处理的部分（值变了 / 行被删 / 新增内容） |
+| **Verbatim-source anchoring** | The entire manual is transcribed verbatim and numbered (`M001`–`MNNN`, typos preserved) as the single fact baseline. Every fact in an answer must land on a number, e.g. "filter lifespan is 60 days (M010)" |
+| **Images filed by section** | Illustrations are named by *where they appear* in the manual (`filter-01.jpg` = section 「Filter replacement」, 1st image) — never by "what I think the picture shows". The assistant sends the file or reports its position; it never describes or OCRs the image |
+| **Six consistency checks** | `verify.js`: citation out-of-range / dead screenshot links / orphan files / value provenance / baseline tampering / prose-vs-source values — any `[FAIL]` blocks shipping |
+| **Auto re-calibration on revision** | After a manual revision, `calibrate` matches each line by content fingerprint, finds where it moved, rewrites every `M###` citation and re-files images automatically — then reports what needs human attention (changed values, deleted lines, new content) |
 
-## 换装你自己的手册
+## Load your own manual
 
-1. 复制仓库为你的技能目录，改 `SKILL.md` frontmatter 的 `name`
-2. 🔴 归档演示知识库（`references/` + `assets/` → `archive/demo-日期/`）
-3. 重写 `references/manual-config.json`（引擎的逐手册配置，**脚本本体零手册内容**）：
-   - `docTitle` / `docVersion` — 手册名与版本
-   - `expectedTitlePattern` — 文档主题守卫（防止误标定到无关文档的安全锁，跨文档换装时配合 `--force-replace`）
-   - `headingStyles` — docx 标题样式 ID（缺省 `Heading1`/`Heading2`；中文 Word 导出的内部样式 ID 也可配置）
-   - `imageSlugs` — 章节标题 → 图片文件名前缀（未登记的小节自动 `sec-NN`）
-   - `watchedValues` / `knownValues` — 要盯的具体值清单（如"有效期 X 小时"），改版时逐项报警
-4. `node scripts/calibrate.js "<你的手册.docx>" --update --force-replace`
-5. 重写 `references/qa-playbook.md`（术语对齐表 / 分因预案 / 对接人 / "文档里没有的内容"）
-6. `node scripts/verify.js` **全绿才算装完**（红灯门禁）
+1. Copy the repo as your skill directory, rename the skill in `SKILL.md` frontmatter
+2. 🔴 Archive the demo knowledge base (`references/` + `assets/` → `archive/demo-date/`)
+3. Rewrite `references/manual-config.json` (the per-manual config — **the scripts themselves contain zero manual content**):
+   - `docTitle` / `docVersion` — manual name and version
+   - `expectedTitlePattern` — document-identity guard (a safety lock against calibrating an unrelated document; pair with `--force-replace` for cross-document swaps)
+   - `headingStyles` — docx heading style IDs (defaults `Heading1`/`Heading2`; Chinese-Word internal style IDs also configurable)
+   - `imageSlugs` — section title → image filename prefix (unregistered sections get `sec-NN` automatically)
+   - `watchedValues` / `knownValues` — the specific values to watch (e.g. "valid for X hours"); each one triggers an alarm when the manual changes
+4. `node scripts/calibrate.js "<your manual.docx>" --update --force-replace`
+5. Rewrite `references/qa-playbook.md` (terminology alignment / diagnosis tree / contact persons / "what the manual does not cover")
+6. `node scripts/verify.js` — **all green or it isn't loaded** (red-light gate)
 
-**无 ffmpeg？** calibrate 会自动降级为原图直拷（跳过重编码），不阻断流程。
+**No ffmpeg?** `calibrate` degrades gracefully: copies images as-is (skips re-encoding) instead of failing.
 
-**非 DOCX**（PDF/TXT/MD）：按现有文件格式人工构建后跑 `verify.js`（见 `SKILL.md` 模式 A）。
+**Non-DOCX** (PDF/TXT/MD): build the files manually following the existing formats, then run `verify.js` (see Mode A in `SKILL.md`).
 
-## 作为 Agent Skill 使用
+## Using it as an Agent Skill
 
-| Runtime | 安装方式 |
+| Runtime | Install |
 |---|---|
-| Claude Code | 放入 `~/.claude/skills/doc-qa-factory/`（或项目 `.claude/skills/`） |
-| 通用 skills 目录约定 | 放入 `~/.agents/skills/doc-qa-factory/` |
-| 其他支持 Agent Skills 的 runtime | 按 runtime 文档注册含 `SKILL.md` 的目录 |
+| Claude Code | put it in `~/.claude/skills/doc-qa-factory/` (or project `.claude/skills/`) |
+| Generic skills directory | put it in `~/.agents/skills/doc-qa-factory/` |
+| Any other Agent-Skills-compatible runtime | register the directory containing `SKILL.md` per your runtime's docs |
 
-触发示例：「气泡水机显示 E1 怎么办？」「把相关的图发我」「我想换装自己公司的手册」——即使不提"手册"二字，frontmatter 的 description 也会让 runtime 在相关话题命中。
+Example triggers: "the machine shows E1, what do I do?", "send me the relevant picture", "I want to swap in my company's manual" — the frontmatter description makes runtimes hit even without the word "manual".
 
-## 仓库结构
+## Repository layout
 
 ```
 doc-qa-factory/
-├── SKILL.md                     助手行为规则（三模式：构建换装 / 问答 / 管理）
-├── demo-manual.docx             演示手册（全虚构，可重复标定）
+├── SKILL.md                     assistant rules (three modes: build/swap · Q&A · manage)
+├── demo-manual.docx             demo manual (fully fictional, re-calibratable)
 ├── references/
-│   ├── manual-config.json       逐手册配置（守卫/样式/图片命名/受监视值）← 换装时你重写的文件
-│   ├── operations.md            标准流程整理（演示示例）
-│   ├── troubleshooting.md       故障排查整理（演示示例）
-│   ├── qa-playbook.md           专属 Q&A 预案（演示示例）
-│   ├── manual-source.md         逐字原文（由 calibrate 生成，gitignore）
-│   ├── manual-source.lock.json  标定记录（生成）
-│   └── media-index.md           图/视频 → 章节索引（生成）
-├── assets/screenshots/          按章节命名的插图（由 calibrate 从 docx 提取）
+│   ├── manual-config.json       per-manual config (guard/styles/image slugs/watched values) ← you rewrite this on swap
+│   ├── operations.md            standard-operations digest (demo example)
+│   ├── troubleshooting.md       troubleshooting digest (demo example)
+│   ├── qa-playbook.md           per-manual Q&A playbook (demo example)
+│   ├── manual-source.md         verbatim source (generated by calibrate, gitignored)
+│   ├── manual-source.lock.json  calibration record (generated)
+│   └── media-index.md           image/video → section index (generated)
+├── assets/screenshots/          illustrations named by section (extracted from the docx)
 ├── scripts/
-│   ├── docx.js                  无依赖 .docx 读取（手写 ZIP 解析 + WordprocessingML）
-│   ├── zip.js                   无依赖 zip 写入（deflate、固定时间戳 → 可字节复现）
-│   ├── calibrate.js             漂移检测 + 重新标定（编号/图片/索引/引用全自动）
-│   ├── verify.js                六项一致性校验
-│   └── package.js               分发打包（先跑 verify，红灯拒绝打包）
-└── build/make-demo-docx.mjs     演示手册的生成脚本（想改演示内容从这里入手）
+│   ├── docx.js                  dependency-free .docx reader (hand-rolled ZIP + WordprocessingML)
+│   ├── zip.js                   dependency-free zip writer (deflate, fixed timestamps → reproducible bytes)
+│   ├── calibrate.js             drift detection + re-calibration (numbering/images/index/citations, all automatic)
+│   ├── verify.js                six consistency checks
+│   └── package.js               distribution packaging (runs verify first; refuses on red)
+└── build/                       demo assets & generators (docs GIF, demo docx)
 ```
 
-## 设计原则（防"自信编造"的三条硬规则）
+## Hard rules (anti-"confident fabrication")
 
-1. **不编造具体值** — 原文里没有就明说"文档没写"，转对接人；曾实测"凭域名猜测编造登录网址"这类事故，现在靠 `knownValues` + 措辞比对逐项拦截
-2. **不描述图片** — 图片含义以该节正文文字为准；发图（首选）或报位置，不 OCR
-3. **红灯门禁** — `verify.js` 有 `[FAIL]` 就不得宣布完成；高危动作（换装 / `--update` / 恢复归档）前有显式 🔴 CHECKPOINT 强制用户确认
+1. **Never invent specific values** — if the source doesn't have it, say so and route to the contact person; caught per-item by `knownValues` + prose comparison
+2. **Never describe images** — image meaning comes from that section's text; send the file (preferred) or report its position, no OCR
+3. **Red-light gate** — any `[FAIL]` in `verify.js` blocks "done" declarations; high-risk actions (swap / `--update` / archive restore) sit behind explicit 🔴 CHECKPOINTs requiring user confirmation
 
 ## License
 

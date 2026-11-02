@@ -10,3 +10,4 @@ build/*.html
 
 # 换装归档
 archive/
+build/frames/
