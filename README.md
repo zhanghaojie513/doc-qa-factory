@@ -6,6 +6,11 @@
 
 逐字原文编号锚定 · 图片按章节归属 · 六项一致性校验 · 改版自动重标定
 
+[![Install](https://img.shields.io/badge/install-npx_skills_add-09B6A3?logo=npm&logoColor=white)](https://github.com/vercel-labs/skills)
+[![Agent Skills](https://img.shields.io/badge/Agent_Skills-Standard-black)](https://github.com/anthropics/skills)
+[![Multi-Runtime](https://img.shields.io/badge/runtime-70%2B_agents-blue)](https://github.com/vercel-labs/skills)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
+
 [English](README.md) | [简体中文](README.zh-CN.md)
 
 </div>
@@ -18,13 +23,22 @@ The repo ships with a **fully fictional** demo knowledge base (a desktop sparkli
 
 ## Use it as a skill
 
-Install into any skills-compatible runtime:
+Install with one command — it auto-detects the agents on your machine (Claude Code, Cursor, Codex, Copilot, Windsurf, OpenCode and 70+ more) and installs into each one's skills directory:
+
+```bash
+npx skills add zhanghaojie513/doc-qa-factory
+```
+
+<details>
+<summary>Manual install (without npm)</summary>
 
 | Runtime | Install |
 |---|---|
 | Claude Code | `git clone https://github.com/zhanghaojie513/doc-qa-factory ~/.claude/skills/doc-qa-factory` |
 | Generic skills directory | `git clone https://github.com/zhanghaojie513/doc-qa-factory ~/.agents/skills/doc-qa-factory` |
 | Other Agent-Skills runtimes | clone anywhere, then register the folder containing `SKILL.md` per your runtime's docs |
+
+</details>
 
 Then just say it — no commands to memorize:
 

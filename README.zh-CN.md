@@ -2,6 +2,11 @@
 
 # doc-qa-factory · 文档问答助手工厂
 
+[![Install](https://img.shields.io/badge/install-npx_skills_add-09B6A3?logo=npm&logoColor=white)](https://github.com/vercel-labs/skills)
+[![Agent Skills](https://img.shields.io/badge/Agent_Skills-Standard-black)](https://github.com/anthropics/skills)
+[![Multi-Runtime](https://img.shields.io/badge/runtime-70%2B_agents-blue)](https://github.com/vercel-labs/skills)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
+
 [English](README.md) | 简体中文
 
 </div>
@@ -14,13 +19,22 @@
 
 ## 作为 Skill 使用（推荐）
 
-装进任何支持 Agent Skills 的 runtime：
+一行命令安装——自动探测你机器上装了哪些 agent（Claude Code、Cursor、Codex、Copilot、Windsurf、OpenCode 等 70+），装进各自的 skills 目录：
+
+```bash
+npx skills add zhanghaojie513/doc-qa-factory
+```
+
+<details>
+<summary>手动安装（没有 npm 时）</summary>
 
 | Runtime | 安装 |
 |---|---|
 | Claude Code | `git clone https://github.com/zhanghaojie513/doc-qa-factory ~/.claude/skills/doc-qa-factory` |
 | 通用 skills 目录约定 | `git clone https://github.com/zhanghaojie513/doc-qa-factory ~/.agents/skills/doc-qa-factory` |
 | 其他 Agent-Skills runtime | clone 到任意位置，再按 runtime 文档注册含 `SKILL.md` 的目录 |
+
+</details>
 
 然后直接说话就行——没有需要背的命令：
 
