@@ -19,24 +19,31 @@
 
 仓库出厂自带一份**全虚构**的演示知识库（《桌面气泡水机使用手册》）——把它当 skill 装好，然后**对 agent 说人话就行**，整条流水线由它来跑。
 
-## 作为 Skill 使用（推荐）
+## 安装
 
-一行命令安装——自动探测你机器上装了哪些 agent（Claude Code、Cursor、Codex、Copilot、Windsurf、OpenCode 等 70+），装进各自的 skills 目录：
+为 Claude Code、Codex、Cursor 等 70+ 兼容 agent 打造。最简单的方式：把链接丢给你的 agent：
+
+```
+帮我安装这个技能：https://github.com/zhanghaojie513/doc-qa-factory
+```
+
+或用 [skills CLI](https://github.com/vercel-labs/skills)（自动探测你机器上装了哪些 agent，装进各自的 skills 目录）：
 
 ```bash
 npx skills add zhanghaojie513/doc-qa-factory
 ```
 
-<details>
-<summary>手动安装（没有 npm 时）</summary>
+或手动安装：
 
-| Runtime | 安装 |
-|---|---|
-| Claude Code | `git clone https://github.com/zhanghaojie513/doc-qa-factory ~/.claude/skills/doc-qa-factory` |
-| 通用 skills 目录约定 | `git clone https://github.com/zhanghaojie513/doc-qa-factory ~/.agents/skills/doc-qa-factory` |
-| 其他 Agent-Skills runtime | clone 到任意位置，再按 runtime 文档注册含 `SKILL.md` 的目录 |
+```bash
+git clone https://github.com/zhanghaojie513/doc-qa-factory.git
+cd doc-qa-factory
+ln -s "$(pwd)" ~/.claude/skills/doc-qa-factory   # Claude Code
+ln -s "$(pwd)" ~/.codex/skills/doc-qa-factory    # Codex
+ln -s "$(pwd)" ~/.agents/skills/doc-qa-factory   # 通用 skills 目录
+```
 
-</details>
+中国大陆访问 GitHub 慢时，clone URL 前可加代理前缀（如 [gh-proxy](https://gh-proxy.com/)）：`git clone https://gh-proxy.com/https://github.com/zhanghaojie513/doc-qa-factory.git`。
 
 运行要求：Node 18+，**零 npm 依赖**（所有脚本只用 Node 内置模块）；`ffmpeg` 可选（没有就自动降级原图直拷，不阻断）。
 

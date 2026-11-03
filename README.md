@@ -23,24 +23,31 @@ An Agent-Skill-format toolkit that loads any product manual / SOP / policy docum
 
 The repo ships with a **fully fictional** demo knowledge base (a desktop sparkling-water maker manual) — install it as a skill and just talk to your agent in plain language. It runs the whole pipeline for you.
 
-## Use it as a skill
+## Install
 
-Install with one command — it auto-detects the agents on your machine (Claude Code, Cursor, Codex, Copilot, Windsurf, OpenCode and 70+ more) and installs into each one's skills directory:
+Built and tuned for Claude Code, Codex, Cursor and 70+ more skills-compatible agents. The simplest way is to hand your agent the link:
+
+```
+Install this skill for me: https://github.com/zhanghaojie513/doc-qa-factory
+```
+
+Or with the [skills](https://github.com/vercel-labs/skills) CLI (auto-detects the agents on your machine and installs into each one's skills directory):
 
 ```bash
 npx skills add zhanghaojie513/doc-qa-factory
 ```
 
-<details>
-<summary>Manual install (without npm)</summary>
+Or by hand:
 
-| Runtime | Install |
-|---|---|
-| Claude Code | `git clone https://github.com/zhanghaojie513/doc-qa-factory ~/.claude/skills/doc-qa-factory` |
-| Generic skills directory | `git clone https://github.com/zhanghaojie513/doc-qa-factory ~/.agents/skills/doc-qa-factory` |
-| Other Agent-Skills runtimes | clone anywhere, then register the folder containing `SKILL.md` per your runtime's docs |
+```bash
+git clone https://github.com/zhanghaojie513/doc-qa-factory.git
+cd doc-qa-factory
+ln -s "$(pwd)" ~/.claude/skills/doc-qa-factory   # Claude Code
+ln -s "$(pwd)" ~/.codex/skills/doc-qa-factory    # Codex
+ln -s "$(pwd)" ~/.agents/skills/doc-qa-factory   # generic skills directory
+```
 
-</details>
+In mainland China, if GitHub is slow, prefix the clone URL with a proxy such as [gh-proxy](https://gh-proxy.com/) (e.g. `git clone https://gh-proxy.com/https://github.com/zhanghaojie513/doc-qa-factory.git`).
 
 Runs on Node 18+ with **zero npm dependencies** — every script uses Node built-ins only. `ffmpeg` is optional (it auto-degrades to raw copies when missing).
 
