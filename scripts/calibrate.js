@@ -438,6 +438,12 @@ function renderMediaIndex(lines, groups) {
 
 function main() {
   const lockOld = fs.existsSync(LOCK) ? JSON.parse(fs.readFileSync(LOCK, 'utf8')) : null;
+  // 无 lock 的原文可能是手工装载的知识库；普通更新不得将其当作首次装载覆盖。
+  if (UPDATE && !lockOld && fs.existsSync(path.join(REFS, 'manual-source.md')) && !FORCE_REPLACE) {
+    console.error('✋ 中止：已有基准原文但没有 lock，普通 --update 会覆盖手工知识库。');
+    console.error('   请先归档现有知识库，并由用户确认换装后使用 --update --force-replace。');
+    process.exit(1);
+  }
   let raw;
   try {
     raw = fs.readFileSync(docxPath);
@@ -484,7 +490,7 @@ function main() {
     const common = oldHashes.filter((h) => newHashes.has(h)).length;
     const overlap = oldHashes.length ? common / oldHashes.length : 0;
     const title = lines.slice(0, 5).map((l) => l.text).join(' ');
-    const titleOk = EXPECTED_DOC.test(title) || EXPECTED_DOC.test(lines.map((l) => l.text).join(' '));
+    const titleOk = !EXPECTED_DOC || EXPECTED_DOC.test(title) || EXPECTED_DOC.test(lines.map((l) => l.text).join(' '));
 
     console.log('=== 文档一致性检查 ===');
     console.log('  与既有基准的共同行: ' + common + '/' + oldHashes.length
@@ -504,14 +510,16 @@ function main() {
     if (!titleOk) {
       console.warn('  ⚠ 文档标题里没有出现预期主题（/' + CFG.expectedTitlePattern + '/）字样，请确认这不是另一份文档：');
       console.warn('    ' + title.slice(0, 80));
-    } else {
+    } else if (EXPECTED_DOC) {
       console.log('  [OK] 文档主题与技能一致，继续。');
+    } else {
+      console.log('  [WARN] 未配置 expectedTitlePattern，已跳过主题匹配；仍按共同行比例检查。');
     }
     console.log('');
   }
 
   if (!lockOld) {
-    // 无标定记录 = 首次建立基准。此时没有"共同行"可比对，只能靠主题判断，
+    // 无标定记录时没有"共同行"可比对，只能靠主题判断；已有基准的写入已在入口保护。
     // 否则一份无关文档会被当成基准写入，技能就此被改错。
     const allText = lines.map((l) => l.text).join(' ');
     if (EXPECTED_DOC && !EXPECTED_DOC.test(allText) && !FORCE_REPLACE) {
@@ -524,7 +532,7 @@ function main() {
       console.error('     node scripts/calibrate.js "<文档.docx>" --update --force-replace');
       process.exit(1);
     }
-    console.log('没有找到标定记录（' + rel(LOCK) + '），本次将建立基准。');
+    console.log('没有找到标定记录（' + rel(LOCK) + '），无法比较旧基准漂移。');
     report.added = lines.map((l) => l.id);
     report.moved = []; report.changed = []; report.map = {};
   } else {

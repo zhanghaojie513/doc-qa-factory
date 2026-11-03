@@ -13,7 +13,7 @@
  *   5. 技能引用的具体值（网址/密码/电话/版本号/数字）都能在原文里找到
  *   6. 手册是否已更新（与锁定文件比对 sha256）
  *
- * 退出码：0 全通过；1 有问题
+ * 退出码：0 无失败项；1 有问题；2 尚未装载手册
  */
 const fs = require('fs');
 const path = require('path');
@@ -56,15 +56,19 @@ if (!fs.existsSync(manPath)) {
   warn('尚未装载任何手册（找不到 references/manual-source.md）');
   console.log('  首次装载：node scripts/calibrate.js "<手册.docx>" --update');
   console.log('  或用仓库自带的演示文档体验完整流程（见 README 的 Quickstart）');
-  process.exit(0);
+  process.exit(2);
 }
 const manRaw = fs.readFileSync(manPath, 'utf8');
 const man = {};
-for (const line of manRaw.split('\n')) {
+for (const line of manRaw.split(/\r?\n/)) {
   const m = line.match(/^(?:#+\s*)?(M\d{3})\u3000(.*)$/);
-  if (m) man[m[1]] = m[2];
+  if (m && m[2].trim()) man[m[1]] = m[2];
 }
 const manIds = Object.keys(man).sort();
+if (!manIds.length) {
+  console.log('  [FAIL] 基准原文为空或没有正文非空的有效 M### 行');
+  process.exit(1);
+}
 console.log('基准原文: ' + manIds.length + ' 行 (' + manIds[0] + '–' + manIds[manIds.length - 1] + ')，共 ' + manRaw.length + ' 字符');
 console.log('');
 
@@ -132,10 +136,10 @@ if (!VALUES.length) {
   if (!valueBad) ok('以上值均有原文出处');
 }
 
-// 网址总点名：技能里出现的每个 http(s) 链接都必须在原文出现
-// 网址总点名：技能里出现的每个 http(s) 链接都必须在原文出现
+// 问答内容里的网址须可在手册核查；README 是项目介绍，其仓库链接和徽章不属于答复内容。
+const answerAndMediaText = Object.entries(texts).filter(([f]) => f !== "README.md").map(([, t]) => t).join("\n");
 const skillUrls = new Set(
-  [...allText.matchAll(/https?:\/\/[^\s`)\]）>]+/g)].map((m) => m[0]).filter((u) => !u.includes('assets'))
+  [...answerAndMediaText.matchAll(/https?:\/\/[^\s`)\]）>]+/g)].map((m) => m[0]).filter((u) => !u.includes('assets'))
 );
 for (const u of skillUrls) {
   if (!manRaw.includes(u)) bad('技能里的网址 "' + u + '" 在原文里找不到出处');
