@@ -1,0 +1,106 @@
+{
+  "sources": [
+    {
+      "kind": "local",
+      "from": "C:\\work\\myProject\\doc-qa-factory",
+      "at": "2026-11-02T15:26:20.446Z",
+      "files": [
+        {
+          "kind": "media",
+          "file": "materials/local-doc-qa-factory/social-card.png",
+          "from": "docs/social-card.png",
+          "note": "(in the README)"
+        },
+        {
+          "kind": "media",
+          "file": "materials/local-doc-qa-factory/demo.gif",
+          "from": "docs/demo.gif",
+          "note": "(in the README)"
+        },
+        {
+          "kind": "logo",
+          "file": "materials/local-doc-qa-factory/A1.png",
+          "from": "docs/logo-candidates/A1.png",
+          "note": ""
+        },
+        {
+          "kind": "logo",
+          "file": "materials/local-doc-qa-factory/R2.png",
+          "from": "docs/logo-candidates/R2.png",
+          "note": ""
+        },
+        {
+          "kind": "logo",
+          "file": "materials/local-doc-qa-factory/logo.png",
+          "from": "docs/logo.png",
+          "note": ""
+        },
+        {
+          "kind": "logo",
+          "file": "materials/local-doc-qa-factory/R1.png",
+          "from": "docs/logo-candidates/R1.png",
+          "note": ""
+        },
+        {
+          "kind": "logo",
+          "file": "materials/local-doc-qa-factory/C1.png",
+          "from": "docs/logo-candidates/C1.png",
+          "note": ""
+        },
+        {
+          "kind": "logo",
+          "file": "materials/local-doc-qa-factory/B2.png",
+          "from": "docs/logo-candidates/B2.png",
+          "note": ""
+        },
+        {
+          "kind": "logo",
+          "file": "materials/local-doc-qa-factory/B1.png",
+          "from": "docs/logo-candidates/B1.png",
+          "note": ""
+        },
+        {
+          "kind": "logo",
+          "file": "materials/local-doc-qa-factory/R3.png",
+          "from": "docs/logo-candidates/R3.png",
+          "note": ""
+        },
+        {
+          "kind": "logo",
+          "file": "materials/local-doc-qa-factory/R4.png",
+          "from": "docs/logo-candidates/R4.png",
+          "note": ""
+        },
+        {
+          "kind": "logo",
+          "file": "materials/local-doc-qa-factory/C2.png",
+          "from": "docs/logo-candidates/C2.png",
+          "note": ""
+        },
+        {
+          "kind": "logo",
+          "file": "materials/local-doc-qa-factory/A2.png",
+          "from": "docs/logo-candidates/A2.png",
+          "note": ""
+        },
+        {
+          "kind": "logo",
+          "file": "materials/local-doc-qa-factory/logo-512.png",
+          "from": "docs/logo-512.png",
+          "note": ""
+        },
+        {
+          "kind": "media",
+          "file": "materials/local-doc-qa-factory/verify-green.png",
+          "from": "docs/verify-green.png",
+          "note": ""
+        }
+      ],
+      "colours": [],
+      "fonts": [],
+      "missing": [
+        "no screenshots or recordings — run the product and capture it"
+      ]
+    }
+  ]
+}

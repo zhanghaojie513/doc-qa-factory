@@ -49,6 +49,7 @@ Then just say it — no commands to memorize:
 | You say | The assistant does |
 |---|---|
 | "Load the demo manual." | Calibrates the fictional manual: builds the numbered verbatim baseline, extracts the illustrations and files them by section, then runs six consistency checks — you just see **all green** |
+| (any question before anything is loaded) | Tells you honestly the knowledge base isn't loaded — verify exits with code **2** — and offers to load the demo or your manual; it never answers from memory or the sample files |
 | "The machine shows E1 — what do I do?" | Answers with an actionable, checkable procedure, cites the source line (M015), and **sends the related illustration as a file** |
 | "Swap in my company's manual: `D:\docs\printer.docx`" | 🔴 Confirms with you first, archives the demo knowledge base, rewrites the per-manual config, re-calibrates, rebuilds the Q&A playbook — and ships **only after verify is all green** |
 | "Which manual is loaded right now?" | Reads the calibration record and reports name / version / checksum |
@@ -135,7 +136,7 @@ The per-manual config it rewrites is `references/manual-config.json` (**the scri
 - `imageSlugs` — section title → image filename prefix (unregistered sections get `sec-NN` automatically)
 - `watchedValues` / `knownValues` — the specific values to watch (e.g. "valid for X hours"); each one triggers an alarm when the manual changes
 
-Notes: **no ffmpeg?** the assistant still works — images are copied as-is instead of re-encoded. **Non-DOCX** (PDF/TXT/MD): the assistant builds the files manually following the existing formats, then runs the same verify gate.
+Notes: **no ffmpeg?** the assistant still works — images are copied as-is instead of re-encoded. **Non-DOCX** (PDF/TXT/MD): the assistant builds the files manually following the existing formats, then runs the same verify gate. A hand-built knowledge base has no calibration lock — which means it is **protected from accidental `--update` overwrites** (the script refuses unless you pass `--force-replace`), and the assistant will tell you that drift detection isn't available for it.
 
 ## Why all-green matters (hard rules)
 
@@ -152,7 +153,10 @@ DOCX is the fully automatic path (numbering, image extraction, media index). PDF
 One is loaded at a time. Every swap archives the previous knowledge base to `archive/`, and any archive can be restored later (after a 🔴 confirmation).
 
 **What if verify.js reports a failure?**
-Nothing ships. `SKILL.md` carries a fix table for every `[FAIL]` — citation out of range, dead links, orphan files, value provenance, baseline tampering, prose-vs-source — each with a first-line fix and a last-resort fallback.
+Nothing ships. `SKILL.md` carries a fix table for every `[FAIL]` — citation out of range, dead links, orphan files, value provenance, baseline tampering, prose-vs-source — each with a first-line fix and a last-resort fallback. Exit codes: **0** clean · **1** problems found · **2** nothing loaded yet.
+
+**Is a hand-built (non-DOCX) knowledge base safe?**
+Yes — arguably safer. Without a calibration lock it can't be overwritten by a stray `--update` (the script refuses), the verify gate applies in full, and the assistant openly states the one limitation: manual drift detection needs a lock, so it will tell you when that check isn't available.
 
 **Where do my documents go?**
 Nowhere. Everything runs locally: the docx is read in place, extracted images land in `assets/`, and nothing is uploaded to any service.

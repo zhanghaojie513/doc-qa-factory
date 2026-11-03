@@ -1,0 +1,13 @@
+# Keep the editable film and its local dependencies; exports are local deliverables.
+!assets/
+assets/sound.wav
+.om/
+out/
+index-*.png
+tools/demo-run/
+tools/sound-spectrum.png
+materials/contact-sheet.jpg
+materials/local-doc-qa-factory/A*.png
+materials/local-doc-qa-factory/B*.png
+materials/local-doc-qa-factory/C*.png
+materials/local-doc-qa-factory/R*.png

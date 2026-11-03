@@ -1,0 +1,286 @@
+<!doctype html>
+<html lang="zh-CN" data-composition-variables='[{"id": "title", "type": "string", "label": "主张", "default": "每个答案，都找得到原文。"}, {"id": "product", "type": "string", "label": "产品名", "default": "doc-qa-factory"}, {"id": "subtitle", "type": "string", "label": "产品说明", "default": "文档问答助手工厂"}, {"id": "install", "type": "string", "label": "安装命令", "default": "npx skills add zhanghaojie513/doc-qa-factory"}, {"id": "mint", "type": "color", "label": "品牌底色", "default": "#a6d2bd"}, {"id": "ink", "type": "color", "label": "文字色", "default": "#1c3e30"}, {"id": "yellow", "type": "color", "label": "出处标注色", "default": "#ffd963"}, {"id": "endHold", "type": "number", "label": "结尾停留", "default": 2, "min": 1, "max": 5, "step": 0.1}]'>
+<head><meta charset="utf-8"><title>doc-qa-factory · 每个答案，都找得到原文</title>
+<script src="vendor/gsap.min.js"></script><script src="vendor/om.js"></script>
+<style>
+@font-face{font-family:Noto;src:url('assets/fonts/NotoSansSC-500.woff');font-weight:500}
+@font-face{font-family:Noto;src:url('assets/fonts/NotoSansSC-700.woff');font-weight:700}
+@font-face{font-family:Noto;src:url('assets/fonts/NotoSansSC-900.woff');font-weight:900}
+@font-face{font-family:Inter;src:url('assets/fonts/Inter-var.woff');font-weight:100 900}
+*{box-sizing:border-box}html,body{margin:0;width:100%;height:100%;overflow:hidden}
+#film{position:relative;width:1920px;height:1080px;overflow:hidden;background:var(--mint);color:var(--ink);font-family:Noto,'Microsoft YaHei',sans-serif;font-weight:500}
+.backdrop{position:absolute;inset:0;background:radial-gradient(ellipse at 12% 8%,#e0efe5a0,transparent 65%),radial-gradient(ellipse at 100% 100%,#71a98b55,transparent 60%)}
+.scene{position:absolute;inset:0;visibility:hidden}.scene.active{visibility:visible}
+.mast{position:absolute;left:100px;right:100px;top:58px;display:flex;justify-content:space-between;align-items:center;font-size:24px;letter-spacing:1px}
+.brand{font-family:Inter,Noto,monospace;letter-spacing:1px;font-weight:700}.eyebrow{font-size:23px;letter-spacing:5px;color:#356553}
+h1,h2,p{margin:0}.heavy{font-weight:900;letter-spacing:-4px}.mono{font-family:Inter,Noto,'Microsoft YaHei',monospace}
+.badge{display:inline-block;padding:7px 15px;border-radius:9px;background:var(--yellow);color:var(--ink);font-family:Inter,Noto,monospace;font-weight:700}
+.panel{background:#fff;border-radius:24px;box-shadow:0 28px 65px #23543b1c}.subtle{color:#527663}.footer{position:absolute;bottom:58px;left:100px;font-size:22px;color:#2e533f}
+.line-mask{overflow:hidden;padding-bottom:8px}.line-mask>span{display:block}.label{font-size:23px;letter-spacing:3px}.logo{border-radius:24%}
+.term{background:#1e1e2e;color:#cdd6f4;border-radius:20px;overflow:hidden;box-shadow:0 36px 80px #102d392c}
+.bar{height:64px;background:#313244;display:flex;align-items:center;padding:0 28px;gap:10px;font:22px Inter,Noto;color:#a5a5ba}
+.dot{width:13px;height:13px;border-radius:50%;background:#f38ba8}.dot:nth-child(2){background:#f9e2af}.dot:nth-child(3){background:#a6e3a1}.terminal-title{margin-left:18px}
+.green{color:#a6e3a1}.blue{color:#89b4fa}.white{color:#fff}.terminal-body{padding:34px 42px;font:27px/1.85 Inter,Noto,'Microsoft YaHei',monospace}
+.cursor{position:absolute;width:42px;height:50px;filter:drop-shadow(0 3px 2px #0003);z-index:5}
+.pill{display:inline-block;padding:12px 23px;border-radius:50px;background:#1c3e30;color:white;font-size:24px}
+.checkmark{display:inline-flex;align-items:center;justify-content:center;border-radius:50%;width:44px;height:44px;background:#1c3e30;color:white;font:30px Noto}
+</style></head><body>
+<div id="film" data-composition-id="docqa" data-width="1920" data-height="1080" data-fps="30">
+  <audio id="om-sound" src="assets/sound.wav" data-start="0" data-duration="30" data-track-index="8" data-volume="1"></audio>
+<div class="backdrop"></div>
+
+<section class="scene active" id="hook">
+ <div class="mast"><b class="brand" data-var-text="product" data-om-id="hook-brand">doc-qa-factory</b><span>文档问答助手工厂</span></div>
+ <div id="hook-copy" style="position:absolute;left:100px;top:232px;width:790px">
+  <div class="eyebrow" data-om-id="hook-eyebrow">作为 SKILL 使用 · 推荐</div>
+  <h1 class="heavy" style="font-size:100px;line-height:1.18;margin-top:36px" data-om-id="hook-title">一行安装。<br>让你的 Agent<br>有据可答。</h1>
+  <p style="font-size:25px;margin-top:34px" data-om-id="hook-subtitle">Claude Code · Cursor · Codex · 70+ Agent</p>
+ </div>
+ <div id="hook-answer" class="panel" style="position:absolute;left:965px;top:228px;width:845px;height:590px;padding:47px" data-layout-allow-overlap>
+  <div class="subtle label" data-om-id="hook-example">README 问答示例 · 演示手册</div>
+  <h2 style="font-size:40px;font-weight:900;margin-top:33px" data-om-id="hook-question">怎么换滤芯？</h2>
+  <p style="font-size:32px;line-height:1.9;margin-top:26px" data-om-id="hook-answer-text">滤芯寿命为 <b>60天</b>。<br>面板显示 F0，就是该换了。</p>
+  <span id="hook-ref" class="badge" style="position:absolute;right:46px;top:259px;font-size:29px" data-om-id="hook-ref">M010 ↙</span>
+  <div id="hook-source" style="border-top:1px solid #bbd5c7;margin-top:34px;padding-top:30px">
+   <div class="mono" style="font-size:24px" data-om-id="hook-source-label">M010 · 手册原文</div>
+   <p style="font-size:24px;line-height:1.8;margin-top:12px" data-om-id="hook-source-text">滤芯寿命为60天，到期后面板显示「F0」提示。</p>
+  </div>
+ </div>
+ <img id="hook-logo" class="logo" src="materials/local-doc-qa-factory/logo-512.png" style="position:absolute;left:1605px;top:748px;width:205px" data-om-id="hook-logo" data-layout-allow-overlap>
+ <div id="hook-install" class="term mono" style="position:absolute;left:100px;top:841px;width:1410px;height:88px;padding:24px 30px;font-size:30px"><span class="green">$ </span><span class="white" data-om-id="hook-install-command" data-var-text="install">npx skills add zhanghaojie513/doc-qa-factory</span></div>
+ <div class="footer" data-om-id="hook-footer">自动探测本机 Agent，装进各自的 skills 目录。</div>
+</section>
+
+<section class="scene" id="demo">
+ <div class="mast"><b class="brand">doc-qa-factory</b><span>01 / 直接说人话</span></div>
+ <h2 class="heavy" style="position:absolute;left:100px;top:184px;font-size:73px" data-om-id="demo-title">装进常用的 Agent，然后直接说人话。</h2>
+ <div id="demo-terminal" class="term" style="position:absolute;left:100px;top:334px;width:1720px;height:177px">
+  <div class="bar"><i class="dot"></i><i class="dot"></i><i class="dot"></i><span class="terminal-title">一行安装 · 自动探测本机 Agent</span></div>
+  <div class="terminal-body" style="padding:23px 35px;font-size:30px"><span class="green">$ </span><span id="install-typed" data-om-id="install-command" data-var-text="install">npx skills add zhanghaojie513/doc-qa-factory</span></div>
+ </div>
+ <div id="demo-question" class="panel" style="position:absolute;left:100px;top:566px;width:535px;height:310px;padding:38px">
+  <div class="eyebrow" style="font-size:20px" data-om-id="demo-example-label">README 演示 · 非独立应用界面</div>
+  <div id="demo-load-prompt" style="position:absolute;left:38px;top:111px;font-size:42px;font-weight:900" data-om-id="demo-load-prompt">装载演示手册</div>
+  <div id="demo-ask-prompt" style="position:absolute;left:38px;top:111px;font-size:43px;font-weight:900" data-om-id="demo-question">怎么换滤芯？</div>
+  <div id="demo-prompt-state" class="subtle" style="position:absolute;left:38px;top:220px;font-size:23px" data-om-id="demo-state">标定、提图、校验，助手自动完成。</div>
+ </div>
+ <div id="demo-answer" class="panel" style="position:absolute;left:693px;top:566px;width:1127px;height:334px;padding:36px 44px">
+  <p class="answer-row" style="font-size:33px;font-weight:700" data-om-id="demo-answer-title">滤芯寿命为60天，到期显示 F0。 <span class="badge" style="font-size:27px">M010</span></p>
+  <p class="answer-row" style="font-size:28px;margin-top:22px" data-om-id="demo-step1">1. 逆时针旋下旧滤芯　　2. 撕除新滤芯密封膜</p>
+  <p class="answer-row" style="font-size:28px;margin-top:17px" data-om-id="demo-step2">3. 顺时针旋入卡座　　　4. 长按「复位」键3秒</p>
+  <p class="answer-row subtle" style="font-size:23px;margin-top:27px" data-om-id="demo-attachment">插图按章节归位 · 支持附件的 Agent 可直接发图</p>
+ </div>
+ <svg id="demo-cursor" class="cursor" style="left:595px;top:747px" viewBox="0 0 32 40" data-om-id="demo-cursor"><path d="M2 2L3 32 11 25 17 38 23 35 17 23 29 22Z" fill="#1c3e30" stroke="white" stroke-width="2"/></svg>
+ <div class="footer">演示：先说「装载演示手册」，再直接提问；处理等待已压缩。</div>
+</section>
+
+<section class="scene" id="source">
+ <div class="mast"><b class="brand">doc-qa-factory</b><span>02 / 答案回到原文</span></div>
+ <div style="position:absolute;left:100px;top:210px;width:600px" id="source-copy"><div class="eyebrow">不是凭感觉。是有据可查。</div><h2 class="heavy" style="font-size:105px;line-height:1.2;margin-top:35px" data-om-id="source-title">60天，<br>原文写得<br>清清楚楚。</h2></div>
+ <div id="source-paper" class="panel" style="position:absolute;left:805px;top:218px;width:1010px;height:660px;padding:55px">
+  <div class="label subtle" data-om-id="source-document">桌面气泡水机使用手册 · 演示文档</div>
+  <div style="display:flex;gap:24px;align-items:center;margin-top:46px"><span id="source-ref" class="badge" style="font-size:40px" data-om-id="source-ref">M010</span><h2 style="font-size:41px" data-om-id="source-section">滤芯更换</h2></div>
+  <p style="font-size:32px;line-height:2.15;margin-top:32px" data-om-id="source-verbatim"><mark id="source-highlight" style="background:#ffd963;color:#1c3e30">滤芯寿命为60天</mark>，到期后面板显示「F0」提示。更换步骤：逆时针旋下旧滤芯==》撕除新滤芯密封膜==》顺时针旋入卡座==》长按「复位」键3秒清除提示。</p>
+  <div style="font-size:23px;margin-top:30px;color:#527663" data-om-id="source-caption">逐字原文锚定 · 编号可回查</div>
+ </div>
+ <div class="footer">回答里的具体值，必须能落到原文编号。</div>
+</section>
+
+<section class="scene" id="burst">
+ <div class="mast"><b class="brand">doc-qa-factory</b><span>每个编号，都有来处。</span></div>
+ <div id="burst-box" style="position:absolute;left:100px;top:220px;width:1720px;height:650px;text-align:center">
+ <div id="shot-0" class="burst-shot" style="position:absolute;inset:0;visibility:hidden"><span class="eyebrow" data-om-id="burst-label-0">桌面气泡水机使用手册</span><div class="heavy" style="font-size:240px;line-height:1.2;margin-top:25px" data-om-id="burst-value-0">M001</div><div class="badge" style="font-size:31px;margin-top:38px" data-om-id="burst-source-0">原文从这里开始</div></div><div id="shot-1" class="burst-shot" style="position:absolute;inset:0;visibility:hidden"><span class="eyebrow" data-om-id="burst-label-1">制作气泡水</span><div class="heavy" style="font-size:240px;line-height:1.2;margin-top:25px" data-om-id="burst-value-1">M007</div><div class="badge" style="font-size:31px;margin-top:38px" data-om-id="burst-source-1">每一步都能回查</div></div><div id="shot-2" class="burst-shot" style="position:absolute;inset:0;visibility:hidden"><span class="eyebrow" data-om-id="burst-label-2">滤芯更换</span><div class="heavy" style="font-size:240px;line-height:1.2;margin-top:25px" data-om-id="burst-value-2">M010</div><div class="badge" style="font-size:31px;margin-top:38px" data-om-id="burst-source-2">答案与原文相连</div></div><div id="shot-3" class="burst-shot" style="position:absolute;inset:0;visibility:hidden"><span class="eyebrow" data-om-id="burst-label-3">E1 · 气压异常</span><div class="heavy" style="font-size:240px;line-height:1.2;margin-top:25px" data-om-id="burst-value-3">M015</div><div class="badge" style="font-size:31px;margin-top:38px" data-om-id="burst-source-3">排查也有出处</div></div><div id="shot-4" class="burst-shot" style="position:absolute;inset:0;visibility:hidden"><span class="eyebrow" data-om-id="burst-label-4">滤芯寿命</span><div class="heavy" style="font-size:240px;line-height:1.2;margin-top:25px" data-om-id="burst-value-4">60天</div><div class="badge" style="font-size:31px;margin-top:38px" data-om-id="burst-source-4">M010</div></div><div id="shot-5" class="burst-shot" style="position:absolute;inset:0;visibility:hidden"><span class="eyebrow" data-om-id="burst-label-5">注气等待</span><div class="heavy" style="font-size:240px;line-height:1.2;margin-top:25px" data-om-id="burst-value-5">8秒</div><div class="badge" style="font-size:31px;margin-top:38px" data-om-id="burst-source-5">M007</div></div><div id="shot-6" class="burst-shot" style="position:absolute;inset:0;visibility:hidden"><span class="eyebrow" data-om-id="burst-label-6">水温上限</span><div class="heavy" style="font-size:240px;line-height:1.2;margin-top:25px" data-om-id="burst-value-6">40℃</div><div class="badge" style="font-size:31px;margin-top:38px" data-om-id="burst-source-6">M016</div></div><div id="shot-7" class="burst-shot" style="position:absolute;inset:0;visibility:hidden"><span class="eyebrow" data-om-id="burst-label-7">童锁时长</span><div class="heavy" style="font-size:240px;line-height:1.2;margin-top:25px" data-om-id="burst-value-7">30分钟</div><div class="badge" style="font-size:31px;margin-top:38px" data-om-id="burst-source-7">M019</div></div>
+ </div>
+ <div class="footer">真实演示手册 · 原文编号与受监视的具体值</div>
+</section>
+
+<section class="scene" id="verify" style="background:#1e1e2e;color:#cdd6f4">
+ <div class="mast"><b class="brand" style="color:#a6e3a1">doc-qa-factory</b><span style="color:#a6e3a1">03 / 用校验，证明它</span></div>
+ <div id="verify-copy" style="position:absolute;left:100px;top:249px;width:640px"><div class="label" style="color:#89b4fa">助手背后自动完成</div><h2 class="heavy" style="font-size:94px;line-height:1.22;color:white;margin-top:36px" data-om-id="verify-title">标定与校验，<br>交给助手。</h2><p style="font-size:27px;color:#a6adc8;line-height:1.8;margin-top:40px" data-om-id="verify-caption">不用记脚本命令。<br>校验全绿，才算装载完成。</p></div>
+ <div id="verify-terminal" class="term" style="position:absolute;left:800px;top:218px;width:1020px;height:662px;border:1px solid #45475a;box-shadow:none">
+  <div class="bar"><i class="dot"></i><i class="dot"></i><i class="dot"></i><span class="terminal-title">真实运行输出 · 演示手册</span></div>
+  <div class="terminal-body" style="font-size:25px;padding:29px 38px">
+   <div class="white" data-om-id="verify-command">助手自动运行 · 一致性校验结果</div>
+   <div style="font-size:23px;margin-top:12px" data-om-id="verify-baseline">基准原文: 19 行 (M001–M019)，共 1062 字符</div>
+   <div class="verify-row green" style="margin-top:26px" data-om-id="verify-reference">[OK] 全部 19 个引用编号都存在，无越界</div>
+   <div class="verify-row green" data-om-id="verify-images">[OK] 引用的 3 张截图全部存在</div>
+   <div class="verify-row green" data-om-id="verify-values">[OK] 以上值均有原文出处</div>
+   <div class="verify-row green" data-om-id="verify-baseline-check">[OK] 基准原文与标定记录一致（未被手改）</div>
+   <div class="verify-row green" data-om-id="verify-wording">[OK] 正文里的具体值与原文一致（逐项精确比对）</div>
+   <div id="verify-success" style="margin-top:35px;background:#a6e3a1;color:#1e1e2e;padding:14px 20px;border-radius:9px;font-size:31px;font-weight:700" data-om-id="verify-success">结论：全部检查通过。</div>
+  </div>
+ </div>
+ <div class="footer" style="color:#9399b2">独立演示副本实际运行 · 2026-11-02 · 输出摘录</div>
+ <img id="verify-original" src="materials/local-doc-qa-factory/verify-green.png" style="position:absolute;left:100px;top:770px;width:300px;border-radius:8px;border:1px solid #45475a" data-om-id="verify-original-screenshot">
+ <span style="position:absolute;left:426px;top:827px;font-size:22px;color:#a6adc8" data-om-id="verify-original-label">项目原始运行截图<br>→ 右侧按输出重建</span>
+</section>
+
+<section class="scene" id="drift">
+ <div class="mast"><b class="brand">doc-qa-factory</b><span>04 / 手册改版之后</span></div>
+ <h2 class="heavy" style="position:absolute;left:100px;top:206px;font-size:90px" data-om-id="drift-title">手册会更新。出处也跟得上。</h2>
+ <div id="drift-old" class="panel" style="position:absolute;left:100px;top:418px;width:520px;height:366px;padding:42px"><div class="label subtle">原知识库</div><div class="badge" style="font-size:70px;margin-top:42px" data-om-id="drift-original-ref">M010</div><p style="font-size:28px;margin-top:30px" data-om-id="drift-old-label">逐行内容指纹</p></div>
+ <svg id="drift-path" style="position:absolute;left:669px;top:540px;width:580px;height:100px" viewBox="0 0 580 100"><path id="drift-stroke" d="M0 50 H550 M525 28 L550 50 L525 72" fill="none" stroke="#1c3e30" stroke-width="4" stroke-dasharray="620" stroke-dashoffset="620"/></svg>
+ <div id="drift-new" class="panel" style="position:absolute;left:1300px;top:418px;width:520px;height:366px;padding:42px"><div class="label subtle">新版本</div><div class="badge" style="font-size:70px;margin-top:42px" data-om-id="drift-updated-ref">M###</div><p style="font-size:28px;margin-top:30px" data-om-id="drift-new-label">重新定位 · 改写引用</p></div>
+ <div id="drift-process" style="position:absolute;left:696px;top:672px;width:520px;text-align:center"><div class="pill" data-om-id="drift-calibrate">自动重标定</div><p style="font-size:23px;margin-top:24px" data-om-id="drift-review">变更 / 删除 / 新增内容，提示人工复核</p></div>
+ <div class="footer">机制示意 · M### 表示改版后按原文重新定位的编号。</div>
+</section>
+
+<section class="scene" id="end">
+ <div class="mast"><b class="brand">OPEN SOURCE / MIT</b><span>从一份手册开始。</span></div>
+ <img id="end-logo" class="logo" src="materials/local-doc-qa-factory/logo.png" style="position:absolute;left:100px;top:267px;width:445px;height:445px" data-om-id="end-logo">
+ <div id="end-copy" style="position:absolute;left:630px;top:258px;width:1190px"><div class="eyebrow" data-var-text="subtitle" data-om-id="end-category">文档问答助手工厂</div><h2 class="heavy" style="font-family:Inter,Noto,monospace;font-size:104px;letter-spacing:-6px;margin-top:32px" data-var-text="product" data-om-id="end-product">doc-qa-factory</h2><p style="font-size:48px;margin-top:29px;font-weight:700" data-var-text="title" data-om-id="end-title">每个答案，都找得到原文。</p><p class="subtle" style="font-size:27px;margin-top:30px" data-om-id="end-detail">原文编号 · 插图归位 · 一致性校验 · 改版重标定</p></div>
+ <div id="end-install" class="term" style="position:absolute;left:630px;top:669px;width:1190px;height:100px;border-radius:15px;padding:29px 32px;font-size:31px"><span class="green">$ </span><span id="end-install-command" class="mono white" data-var-text="install" data-om-id="end-install-command">npx skills add zhanghaojie513/doc-qa-factory</span></div>
+ <div id="end-url" class="mono" style="position:absolute;left:630px;top:822px;font-size:25px;color:#356553" data-om-id="end-url">github.com/zhanghaojie513/doc-qa-factory</div>
+</section>
+</div>
+<script type="text/vnd.abc" id="om-score">
+X:1
+T:原文有据 · Mint Book Groove
+M:4/4
+L:1/8
+Q:1/4=120
+K:F
+V:ML inst=marimba role=melody gain=0.55
+!mark:hook! !mf! F A c z A z G z |
+F z A c d z c z |
+!mark:demo! !mp! A z c z A z G z |
+G z B d c z A z |
+F A c z A z G z |
+!mark:source! F2 z2 A c z2 |
+!mark:burst! !f! F A c d c A G A |
+G B d e d B A G |
+!mark:verify! !ff! f2 e d c2 A2 |
+d2 c A G2 F2 |
+!mark:drift! !mf! A z c z A z G z |
+G z B z d z c z |
+!mark:end! F A c z d c A G |
+F2 A2 c2 A2 |
+!mp! F2 A2 c2 F2 |
+V:RH inst=rhodes gain=0.42
+!mf! [FAc]2 z2 [FAc]2 z2 |
+[GBd]2 z2 [GBd]2 z2 |
+!mp! [FAc]2 z6 |
+[EGB]2 z6 |
+[FAc]2 z2 [FAc]2 z2 |
+[DFAd]4 z4 |
+!f! [DFAd]2 z [DFAd] z2 [DFAd]2 |
+[EGBd]2 z [EGBd] z2 [EGBd]2 |
+!ff! [FAcf]2 z [FAcf] z [FAcf] z2 |
+[DFAd]2 z [DFAd] z [DFAd] z2 |
+!mf! [GBd]2 z2 [GBd]2 z2 |
+[EGBd]2 z2 [EGBd]2 z2 |
+[FAc]2 z2 [FAc]2 z2 |
+[GBd]2 z2 [EGB]2 z2 |
+!mp! [FAc]4 z4 |
+V:BS inst=bass gain=0.6
+!mf! F,,2 z F,, F,,2 z2 |
+G,,2 z G,, G,,2 z2 |
+!mp! F,,2 z F,, F,,2 z2 |
+C,,2 z C,, C,,2 z2 |
+F,,2 z F,, F,,2 z2 |
+D,,2 z D,, D,,2 z2 |
+!f! D,,2 z D,, D,,2 z2 |
+C,,2 z C,, C,,2 z2 |
+!ff! F,,2 z F,, F,,2 z2 |
+D,,2 z D,, D,,2 z2 |
+!mf! G,,2 z G,, G,,2 z2 |
+C,,2 z C,, C,,2 z2 |
+F,,2 z F,, F,,2 z2 |
+C,,2 z C,, C,,2 z2 |
+!mp! F,,4 z4 |
+V:DR inst=drums kit=pop gain=0.5
+!mf! [C,,^F,,] ^F,, [D,,^F,,] ^F,, C,, ^F,, [D,,^F,,] ^F,, |
+[C,,^F,,] ^F,, [D,,^F,,] ^F,, C,, ^F,, [D,,^F,,] ^F,, |
+!mp! C,, z ^F,, z D,, z ^F,, z |
+C,, z ^F,, z D,, z ^F,, z |
+[C,,^F,,] ^F,, [D,,^F,,] ^F,, C,, ^F,, [D,,^F,,] ^F,, |
+C,, z ^F,, z D,, z z2 |
+!f! [C,,^F,,] ^F,, [D,,^F,,] ^F,, C,, ^F,, [D,,^F,,] ^F,, |
+C,, ^F,, D,, ^F,, D,, D,, D,, D,, |
+!ff! [^C,C,,] ^F,, [D,,^F,,] ^F,, C,, ^F,, [D,,^F,,] ^F,, |
+[C,,^F,,] ^F,, [D,,^F,,] ^F,, C,, ^F,, [D,,^F,,] ^F,, |
+!mf! [C,,^F,,] ^F,, [D,,^F,,] ^F,, C,, ^F,, [D,,^F,,] ^F,, |
+[C,,^F,,] ^F,, [D,,^F,,] ^F,, C,, ^F,, [D,,^F,,] ^F,, |
+[C,,^F,,] ^F,, [D,,^F,,] ^F,, C,, ^F,, [D,,^F,,] ^F,, |
+[C,,^F,,] ^F,, [D,,^F,,] ^F,, C,, ^F,, [D,,^F,,] ^F,, |
+!mp! [C,,^C,] z7 |
+</script>
+<script>
+const V=OM.vars();
+const tl=gsap.timeline({paused:true,defaults:{ease:'power3.out'}});
+OM.music({bpm:120});
+const scenes=[['hook',0],['demo',4],['source',10],['burst',12],['verify',16],['drift',20],['end',24]];
+gsap.set('.scene',{autoAlpha:0});gsap.set('#hook',{autoAlpha:1});
+scenes.forEach(([id,t],i)=>{tl.addLabel('scene:'+id,t);if(i){tl.set('#'+scenes[i-1][0],{autoAlpha:0},t);tl.set('#'+id,{autoAlpha:1},t);}});
+
+gsap.set('#demo-terminal,#demo-question,#demo-ask-prompt,#demo-cursor,#demo-answer,.answer-row,#source-copy,#verify-copy,.verify-row,#verify-success,#drift-new,#drift-process,#end-copy,#end-install,#end-url',{opacity:0});
+gsap.set('#install-typed,#end-install-command',{clipPath:'inset(0 100% 0 0)'});
+// First frame is already the poster. The move starts with the result, not a blank reveal.
+tl.fromTo('#hook-copy',{x:-70},{x:0,duration:.55},0);
+tl.fromTo('#hook-answer',{scale:1.25,x:330},{scale:1,x:0,duration:.9,ease:'power3.out'},0);
+tl.fromTo('#hook-ref',{scale:1},{scale:1.13,duration:.22,yoyo:true,repeat:1},.85);
+tl.fromTo('#hook-source',{opacity:.35},{opacity:1,duration:.45},1.65);
+tl.fromTo('#hook-logo',{rotation:-5,y:30},{rotation:0,y:0,duration:.8,ease:OM.spring(.08)},.1);
+tl.fromTo('#hook-install',{y:12},{y:0,duration:.4},0);
+tl.to('#hook-copy',{x:-230,opacity:0,duration:.4,ease:'power2.in'},1.5);
+tl.to('#hook-logo,#hook-install',{y:100,opacity:0,duration:.35,ease:'power2.in'},1.6);
+tl.to('#hook-answer',{x:-430,y:-25,scale:1.33,duration:.75,ease:'power3.inOut'},1.5);
+tl.to('#hook-answer',{x:-580,opacity:0,duration:.7,ease:'power2.in'},3.3);
+
+tl.fromTo('#demo-terminal',{y:100,opacity:0},{y:0,opacity:1,duration:.6,immediateRender:false},4);
+tl.fromTo('#install-typed',{clipPath:'inset(0 100% 0 0)'},{clipPath:'inset(0 0% 0 0)',duration:1.05,ease:'steps(38)',immediateRender:false},4.4);
+tl.fromTo('#demo-question',{y:35,opacity:0},{y:0,opacity:1,duration:.4,immediateRender:false},5.8);
+tl.fromTo('#demo-load-prompt',{opacity:1},{opacity:0,duration:.15,immediateRender:false},6.85);
+tl.fromTo('#demo-ask-prompt',{opacity:0,y:10},{opacity:1,y:0,duration:.2,immediateRender:false},7);
+tl.fromTo('#demo-cursor',{x:110,y:60,opacity:0},{x:0,y:0,opacity:1,duration:.6,immediateRender:false},6.1);
+tl.to('#demo-cursor',{scale:.85,duration:.1},6.85).to('#demo-cursor',{scale:1,duration:.15},6.95);
+tl.fromTo('#demo-answer',{opacity:0,x:35},{opacity:1,x:0,duration:.38,immediateRender:false},7.2);
+tl.fromTo('.answer-row',{y:14,opacity:0},{y:0,opacity:1,duration:.32,stagger:.24,immediateRender:false},7.3);
+tl.to('#demo-prompt-state',{opacity:0,duration:.2},7.3);
+tl.to('#demo-cursor',{x:850,y:-110,duration:.6,ease:'power3.inOut'},8.9);
+tl.to('#demo-answer',{scale:1.025,duration:.55,transformOrigin:'90% 10%'},9.2);
+
+tl.fromTo('#source-paper',{x:130},{x:0,duration:.45,immediateRender:false,ease:'expo.out'},10);
+tl.fromTo('#source-copy',{x:-35,opacity:0},{x:0,opacity:1,duration:.4,immediateRender:false},10.15);
+tl.fromTo('#source-ref',{scale:1.25},{scale:1,duration:.35,immediateRender:false},10.1);
+tl.fromTo('#source-highlight',{backgroundColor:'#ffffff'},{backgroundColor:'#ffd963',duration:.4,immediateRender:false},10.65);
+
+gsap.set('.burst-shot',{autoAlpha:0});
+for(let i=0;i<8;i++){
+ const t=12+i*.5;
+ tl.set('.burst-shot',{autoAlpha:0},t);tl.set('#shot-'+i,{autoAlpha:1},t);
+ tl.fromTo('#shot-'+i,{scale:1.12,y:22},{scale:1,y:0,duration:.44,ease:'expo.out',immediateRender:false},t);
+ OM.sfx('hit',t,{gain:.22});
+}
+
+tl.fromTo('#verify-terminal',{y:80,scale:.96},{y:0,scale:1,duration:.55,immediateRender:false},16);
+tl.fromTo('#verify-copy',{x:-45,opacity:0},{x:0,opacity:1,duration:.45,immediateRender:false},16.05);
+tl.fromTo('.verify-row',{opacity:0,x:15},{opacity:1,x:0,stagger:.18,duration:.28,immediateRender:false},16.65);
+tl.fromTo('#verify-success',{scaleX:0,opacity:0},{scaleX:1,opacity:1,transformOrigin:'0% 50%',duration:.4,immediateRender:false},18);
+tl.to('#verify-terminal',{y:-10,duration:1,ease:'sine.inOut'},18.7);
+
+tl.fromTo('#drift-old',{x:-60},{x:0,duration:.45,immediateRender:false},20);
+tl.fromTo('#drift-new',{x:60,opacity:0},{x:0,opacity:1,duration:.45,immediateRender:false},20.45);
+tl.to('#drift-stroke',{strokeDashoffset:0,duration:.8,ease:'power2.inOut'},20.8);
+tl.fromTo('#drift-process',{y:25,opacity:0},{y:0,opacity:1,duration:.4,immediateRender:false},21.6);
+gsap.set('#drift-new .badge',{opacity:0});
+tl.fromTo('#drift-new .badge',{x:-330,scale:.8,opacity:0},{x:0,scale:1,opacity:1,duration:.55,immediateRender:false,ease:'power3.out'},22);
+tl.to('#drift-old',{y:-9,duration:.9,ease:'sine.inOut'},22.7);
+
+tl.fromTo('#end-logo',{x:-90,rotation:-7,scale:.88},{x:0,rotation:0,scale:1,duration:.75,immediateRender:false,ease:OM.spring(.08)},24);
+tl.fromTo('#end-copy',{y:35,opacity:0},{y:0,opacity:1,duration:.6,immediateRender:false},24.15);
+tl.fromTo('#end-install',{y:25,opacity:0},{y:0,opacity:1,duration:.4,immediateRender:false},26);
+tl.fromTo('#end-install-command',{clipPath:'inset(0 100% 0 0)'},{clipPath:'inset(0)',duration:.9,ease:'steps(38)',immediateRender:false},26.2);
+tl.fromTo('#end-url',{opacity:0,y:12},{opacity:1,y:0,duration:.4,immediateRender:false},27.5);
+tl.to('#end-logo',{y:-8,duration:1.2,ease:'sine.inOut',yoyo:true,repeat:1},27.5);
+
+OM.sfx('click',.95,{gain:.4}); OM.sfx('pop',1.9,{gain:.35});
+OM.sfx('whoosh',4,{gain:.3}); OM.sfx('click',6.9,{gain:.3});
+OM.sfx('pop',7.5,{gain:.28});OM.sfx('thud',10.2,{gain:.3});
+OM.sfx('impact',16,{gain:.3});OM.sfx('chime',18.1,{gain:.45});
+OM.sfx('whoosh',20.4,{gain:.25});OM.sfx('click',22.1,{gain:.3});
+OM.sfx('thud',24.2,{gain:.35});OM.sfx('pop',26.2,{gain:.25});
+
+tl.to({},{duration:V.endHold},28);
+window.__timelines={docqa:tl};
+</script></body></html>
