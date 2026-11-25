@@ -1,0 +1,41 @@
+{
+ "duration_s": 15.0,
+ "still_ratio": 0.272,
+ "low_ratio": 0.606,
+ "cuts": [],
+ "bursts": [],
+ "longest_quiet_s": 3.42,
+ "mean_energy": 1.739,
+ "flow": {
+  "fps": 30,
+  "sampled_fps": 30,
+  "peak": 64,
+  "moves": [
+   {
+    "t0": 0.13,
+    "t1": 0.43,
+    "path": 282,
+    "t80": 0.56,
+    "peak": 64
+   },
+   {
+    "t0": 0.67,
+    "t1": 9.4,
+    "path": 4399,
+    "t80": 0.57,
+    "peak": 60
+   },
+   {
+    "t0": 9.53,
+    "t1": 11.57,
+    "path": 987,
+    "t80": 0.57,
+    "peak": 43
+   }
+  ],
+  "t80_median": 0.57,
+  "soft_share": 1.0,
+  "fast_frames": 104,
+  "smear_median": 0.41
+ }
+}

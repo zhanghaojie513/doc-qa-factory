@@ -1,0 +1,113 @@
+{
+  "samples": [
+    {
+      "t": 0.35,
+      "deterministic": true
+    },
+    {
+      "t": 2.8,
+      "deterministic": true
+    },
+    {
+      "t": 4.5,
+      "deterministic": true
+    },
+    {
+      "t": 6.6,
+      "deterministic": true
+    },
+    {
+      "t": 7.2,
+      "deterministic": true
+    },
+    {
+      "t": 9.8,
+      "deterministic": true
+    },
+    {
+      "t": 12.1,
+      "deterministic": true
+    },
+    {
+      "t": 15.4,
+      "deterministic": true
+    },
+    {
+      "t": 20.5,
+      "deterministic": true
+    },
+    {
+      "t": 2.8,
+      "operatorBottom": 732.9954088342906,
+      "captionTop": 926.921875,
+      "captionOpacity": 1
+    },
+    {
+      "t": 4.5,
+      "operatorBottom": 808.8562655101458,
+      "captionTop": 1052,
+      "captionOpacity": 0
+    },
+    {
+      "t": 7.2,
+      "operatorBottom": 882.4587410607731,
+      "captionTop": 926.921875,
+      "captionOpacity": 1
+    },
+    {
+      "t": 9.8,
+      "operatorBottom": 872.0446193296643,
+      "captionTop": 926.921875,
+      "captionOpacity": 1
+    },
+    {
+      "t": 12.1,
+      "operatorBottom": 797.7276123648369,
+      "captionTop": 926.921875,
+      "captionOpacity": 1
+    }
+  ],
+  "gateContacts": [
+    {
+      "t": 11.85,
+      "checkX": 7.25,
+      "paperMin": 2.674049999999996,
+      "paperMax": 7.424049999999996
+    },
+    {
+      "t": 12.02,
+      "checkX": 7.95,
+      "paperMin": 3.730985049999994,
+      "paperMax": 8.480985049999994
+    },
+    {
+      "t": 12.19,
+      "checkX": 8.65,
+      "paperMin": 5.2611343999999916,
+      "paperMax": 10.011134399999992
+    },
+    {
+      "t": 12.36,
+      "checkX": 9.35,
+      "paperMin": 6.573319349999993,
+      "paperMax": 11.323319349999993
+    },
+    {
+      "t": 12.53,
+      "checkX": 10.05,
+      "paperMin": 7.426601199999995,
+      "paperMax": 12.176601199999995
+    },
+    {
+      "t": 12.7,
+      "checkX": 10.75,
+      "paperMin": 7.919731249999998,
+      "paperMax": 12.669731249999998
+    }
+  ],
+  "textCrop": {
+    "feed": 1,
+    "uMax": 1
+  },
+  "errors": []
+}

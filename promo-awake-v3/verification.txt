@@ -1,0 +1,19 @@
+
+draft.mp4 — energy map:
+  0.0s |          ... . ..:.:...:+.                     |
+  4.0s |  .:@@+.                  -***-                 |
+  8.0s |              .=+++.                            |
+ 12.0s |  .                             .               |
+ 16.0s |     .--*:.                                     |
+ 20.0s |            |
+
+  PASS  cadence    shot lengths [0.12, 0.53, 0.45, 0.7, 0.85, 0.4, 0.95, 0.75, 1.25, 0.65, 2.4, 0.5, 2.55, 0.3, 2.25, 0.3, 1.15, 0.75, 0.4, 0.25, 0.5, 3.0]  CV 0.85 (need >= 0.25)
+  PASS  rest       still 0.706  longest quiet 4.0 s
+  PASS  burst      bursts [(4.25, 4.5), (6.17, 6.5), (9.25, 9.5), (16.5, 16.67)]
+  PASS  not-flat   row-profile variation 0.78 (advisory, >= 0.35)
+  PASS  audio      peak -3.8 dBFS  clipped 0  quiet 0.335
+  PASS  continuity carry score 1.00 over 2 boundaries; nothing carried at — (probe.py lists each)
+  PASS  curves     peak 404 px/frame @30 fps (paper: at 4.00 s), shutter 180° (render.json); soft curves 92 % of travel, median t80 0.66
+  PASS  framing    paper wholly in frame 0.1–21 s (628 samples); question wholly in frame 0.1–0.95 s (26 samples)
+
+VERDICT: PASS

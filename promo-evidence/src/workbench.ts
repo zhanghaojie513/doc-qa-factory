@@ -1,0 +1,5 @@
+import {Main,SHOTS,SFX,COMPONENTS,TOTAL,C,CAPTIONS,Head,BgmUnit} from './Main';
+export const WORKBENCH={name:'每个答案，都有来处 · doc-qa-factory',fps:30,width:1920,height:1080,total:TOTAL,background:C.mint,
+shots:SHOTS.map((s,i)=>({...s,label:s.title,component:COMPONENTS[i],props:{title:i>=1&&i<=5?'':s.title},schema:i>=1&&i<=5?[]:[{type:'textarea',key:'title',label:'标题',default:s.title}]})),
+captions:CAPTIONS.map(s=>({...s,id:'caption-'+s.id,label:s.title,component:Head,props:{text:s.text,dark:s.dark,color:s.dark?C.paper:C.ink,fontSize:70,left:90,top:158},schema:[{type:'textarea',key:'text',label:'文案',default:s.text},{type:'number',key:'fontSize',label:'字号',default:70,min:36,max:140},{type:'color',key:'color',label:'颜色',default:s.dark?C.paper:C.ink},{type:'number',key:'left',label:'横向位置',default:90},{type:'number',key:'top',label:'纵向位置',default:158}]})),
+sfx:SFX.map(s=>({from:s.from,duration:s.duration,src:s.src,volume:s.volume})),overlays:[{id:'score',label:'配乐 · 淡入淡出',from:0,duration:TOTAL,component:BgmUnit}],original:Main};

@@ -1,0 +1,34 @@
+{
+  "provider": "freesound",
+  "query": "shimmer",
+  "license_policy": "cc0",
+  "ordering": "relevance; popularity is supporting evidence only",
+  "results": [
+    {
+      "id": "fs:858810",
+      "title": "Long Bright Shimmer Pad",
+      "author": "bassimat",
+      "duration_seconds": 2.72182,
+      "preview_url": "https://cdn.freesound.org/previews/858/858810_15636277-hq.mp3",
+      "downloads": 11,
+      "page_url": "https://freesound.org/people/bassimat/sounds/858810/",
+      "license_label": "Creative Commons 0",
+      "description": "The longest sound in the set at 2.7 seconds — a semi-tonal bright shimmer pad with 68% high-frequency energy and a peak near 8 kHz. Airy and spacious, useful as a texture or pad layer. Generated with Relic Waves on iPad.",
+      "rating": null,
+      "rating_count": null
+    },
+    {
+      "id": "fs:714565",
+      "title": "Fashion Shimmer - Luxury Runway Percussion Stinger",
+      "author": "LilMati",
+      "duration_seconds": 2.7,
+      "preview_url": "https://cdn.freesound.org/previews/714/714565_6142149-hq.mp3",
+      "downloads": 315,
+      "page_url": "https://freesound.org/people/LilMati/sounds/714565/",
+      "license_label": "Creative Commons 0",
+      "description": "Fashion Shimmer - Luxury Runway Percussion Stinger Made with Drumart SLD VST by Electronik Sound Lab. A short luxury fashion percussion stinger with chic shimmer, polished runway energy and clean glamorous motion. Made for fashion edits, beauty clips, model entrances, luxury scenes, game transitions, stylish intros, product shots, brand videos and quick cinematic cuts. Created with permission to publish.",
+      "rating": 4.3,
+      "rating_count": 11
+    }
+  ]
+}

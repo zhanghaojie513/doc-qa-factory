@@ -1,0 +1,56 @@
+[
+  {
+    "name": "marker-underline-title",
+    "summary": "大标题落定后，关键词下方马克笔下划线从左到右快速描画——变宽笔形、毛糙边缘、微上斜跟随斜体字势，贴着字底",
+    "use": "标题里强调单个关键词（new/free/AI…）；手写感/人味的品牌调性；正文标注式强调",
+    "duration": "标题落定 +4~8f 后起笔，划线 8–12f，总 1–1.5s",
+    "energy": "低（一笔点睛，不抢标题的戏）",
+    "intention": "打印体标题里突然出现一笔手绘马克笔，用材质反差把一个词从 排版里拎出来——像人拿笔在海报上圈重点。命门有三：**快** （8–12f 一笔呵成，慢了读作加载条）、**近**（贴着字底，离远了 读作分隔线不是强调）、**跟字势**（斜体词的划线必须左低右高 微上斜——斜向画反是最容易犯且一眼假的错，判例见已知坑）。",
+    "source": "references/shots/typography/marker-underline-title.md",
+    "updatedAt": "2026-10-02T21:01:48Z",
+    "styles": [
+      {
+        "key": "marker-underline-title",
+        "label": "marker-underline-title",
+        "description": "大标题落定后，关键词下方马克笔下划线从左到右快速描画——变宽笔形、毛糙边缘、微上斜跟随斜体字势，贴着字底",
+        "media": {
+          "url": "./media/marker-underline-title.mp4?v=1790980736832",
+          "type": "mp4"
+        }
+      }
+    ],
+    "sourceUrl": "./source/marker-underline-title.md",
+    "category": "typography",
+    "tags": [
+      "typography"
+    ],
+    "addedAt": "2026-07-19T05:45:41Z"
+  },
+  {
+    "name": "outro-group-photo-launch",
+    "summary": "全片元素从四面八方飞来围住字标合影，crane 落机位+舞台光+金尘做成发布会收场",
+    "use": "outro/品牌收尾；多功能产品的\"全家福\"式终镜",
+    "duration": "约 4.8s（145f）",
+    "energy": "峰值（全片最高点）",
+    "intention": "把看过的每个功能各抽一个代表元素叫回来合影，字标压轴登场——观众离场前最后记住的是\"这些东西属于同一个产品\"。规格必须是发布会级：能量推到全片最高。",
+    "source": "references/shots/outro/outro-group-photo-launch.md",
+    "updatedAt": "2026-10-02T21:01:48Z",
+    "styles": [
+      {
+        "key": "outro-group-photo-launch",
+        "label": "outro-group-photo-launch",
+        "description": "全片元素从四面八方飞来围住字标合影，crane 落机位+舞台光+金尘做成发布会收场",
+        "media": {
+          "url": "./media/outro-group-photo-launch.mp4?v=1790980736839",
+          "type": "mp4"
+        }
+      }
+    ],
+    "sourceUrl": "./source/outro-group-photo-launch.md",
+    "category": "outro",
+    "tags": [
+      "outro"
+    ],
+    "addedAt": "2026-07-19T05:45:41Z"
+  }
+]

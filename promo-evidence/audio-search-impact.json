@@ -1,0 +1,34 @@
+{
+  "provider": "freesound",
+  "query": "cinematic impact",
+  "license_policy": "cc0",
+  "ordering": "relevance; popularity is supporting evidence only",
+  "results": [
+    {
+      "id": "fs:804681",
+      "title": "PLASMA IMPACT ONE",
+      "author": "johnjohnfm",
+      "duration_seconds": 3.5,
+      "preview_url": "https://cdn.freesound.org/previews/804/804681_2403755-hq.mp3",
+      "downloads": 151,
+      "page_url": "https://freesound.org/people/johnjohnfm/sounds/804681/",
+      "license_label": "Creative Commons 0",
+      "description": "A cinematic plasma blast made from natural sounds with artificial processing. Engineered and produced by JOHN E. REYNOLDS for JOHNJOHNFM LLC.",
+      "rating": 5.0,
+      "rating_count": 5
+    },
+    {
+      "id": "fs:812744",
+      "title": "Sound Design Elements Impact SFX PS 078",
+      "author": "AudioPapkin",
+      "duration_seconds": 1.624,
+      "preview_url": "https://cdn.freesound.org/previews/812/812744_8698658-hq.mp3",
+      "downloads": 111,
+      "page_url": "https://freesound.org/people/AudioPapkin/sounds/812744/",
+      "license_label": "Creative Commons 0",
+      "description": "Support me buy me coffee : https://ko-fi.com/audiopapkin Support me buy me coffee : https://buymeacoffee.com/audiopapkin Sound Design Elements Impact SFX ,is perfect for cinematic uses,video games. Effects recorded from the field. Recording gear-Tascam Portacapture x8 and Microphone - RØDE NTG5 Native Instruments Kontakt 8 REAPER DAW - audio processing My YouTube channel: https://www.youtube.com/channel/UC3LZ6GTrLwgmpXbLLQnS0lw",
+      "rating": 4.5,
+      "rating_count": 4
+    }
+  ]
+}

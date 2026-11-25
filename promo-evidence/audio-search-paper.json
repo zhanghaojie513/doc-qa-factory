@@ -1,0 +1,34 @@
+{
+  "provider": "freesound",
+  "query": "single page turn",
+  "license_policy": "cc0",
+  "ordering": "relevance; popularity is supporting evidence only",
+  "results": [
+    {
+      "id": "fs:726518",
+      "title": "Page Turn, Big Book",
+      "author": "supaluci",
+      "duration_seconds": 1.22651,
+      "preview_url": "https://cdn.freesound.org/previews/726/726518_3199189-hq.mp3",
+      "downloads": 274,
+      "page_url": "https://freesound.org/people/supaluci/sounds/726518/",
+      "license_label": "Creative Commons 0",
+      "description": "single page turn recorded and edited in audacity",
+      "rating": 3.5,
+      "rating_count": 8
+    },
+    {
+      "id": "fs:630019",
+      "title": "Singular Page Turn.wav",
+      "author": "Flem0527",
+      "duration_seconds": 1.04361,
+      "preview_url": "https://cdn.freesound.org/previews/630/630019_12715066-hq.mp3",
+      "downloads": 390,
+      "page_url": "https://freesound.org/people/Flem0527/sounds/630019/",
+      "license_label": "Creative Commons 0",
+      "description": "A single page in a Bible being turned",
+      "rating": 4.5,
+      "rating_count": 13
+    }
+  ]
+}

@@ -1,0 +1,28 @@
+{
+ "comp": "C:\\work\\myProject\\doc-qa-factory\\promo-factory\\comp.html",
+ "fps": 30,
+ "scale": 1,
+ "size": [
+  1920,
+  1080
+ ],
+ "shutter": 180.0,
+ "samples": "adaptive",
+ "gap_px": 6.0,
+ "samples_per_moving_frame": {
+  "4": 12,
+  "6": 1,
+  "10": 1
+ },
+ "workers": 4,
+ "frames": 705,
+ "still_frames": 29,
+ "cut_frames": 3,
+ "captures": 122,
+ "seconds": 32.1,
+ "final": false,
+ "resumed": true,
+ "recovered_frames": 662,
+ "newly_rendered_frames": 43,
+ "counter_scope": "captures, seconds, still_frames, cut_frames and sample histogram cover only the resume run; all 705 output frames use the same shutter settings"
+}
