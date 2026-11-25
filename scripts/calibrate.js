@@ -289,10 +289,6 @@ function rewriteCitations(idMap) {
 
 /* ---------- 6. 出图（ffmpeg） ---------- */
 
-function haveFfmpeg() {
-  try { execFileSync('ffmpeg', ['-version'], { stdio: 'ignore' }); return true; } catch { return false; }
-}
-
 /** 转一张图；对偶发的编码器初始化失败做降级重试。 */
 function encodeOne(srcBuf, ext, outPath) {
   const tmp = path.join(require('os').tmpdir(), 'calib-' + hash(outPath) + ext);
@@ -316,7 +312,7 @@ function encodeOne(srcBuf, ext, outPath) {
       if (e.code === 'ENOENT') {
         fs.copyFileSync(tmp, outPath);
         fs.unlinkSync(tmp);
-        console.warn('  ⚠ 未检测到 ffmpeg，跳过重编码（原图直拷: ' + path.basename(outPath) + '）');
+        console.warn('  ⚠ 未检测到 ffmpeg，已直拷原图: ' + path.basename(outPath) + '；实际图片格式可能与 .jpg 扩展名不同。');
         return true;
       }
       lastErr = e;
@@ -332,7 +328,6 @@ function encodeOne(srcBuf, ext, outPath) {
  * 技能就会留下一个不完整的图片目录。这里的写法保证失败时旧图完好无损。
  */
 function writeImages(doc, plan, report) {
-  if (!haveFfmpeg()) { report.imageNote = '未检测到 ffmpeg，跳过出图（仅更新文字索引）'; return false; }
   const staging = IMG_DIR + '.staging';
   fs.rmSync(staging, { recursive: true, force: true });
   fs.mkdirSync(staging, { recursive: true });
